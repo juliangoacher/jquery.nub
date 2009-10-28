@@ -125,7 +125,7 @@
                         <a href="http://cloud.github.com/downloads/juliangoacher/jquery.nub/jquery.nub.js">
                             jquery.nub.js
                         </a>
-                        &nbsp;
+                        &nbsp;, minified:
                         <a href="http://cloud.github.com/downloads/juliangoacher/jquery.nub/jquery.nub.min.js">
                             jquery.nub.min.js
                         </a>
@@ -134,7 +134,7 @@
                         <a href="http://cloud.github.com/downloads/juliangoacher/jquery.nub/jquery.nub-frames.js">
                             jquery.nub-frames.js
                         </a>
-                        &nbsp;
+                        &nbsp;, minified:
                         <a href="http://cloud.github.com/downloads/juliangoacher/jquery.nub/jquery.nub-frames.min.js">
                             jquery.nub-frames.min.js
                         </a>
@@ -163,7 +163,15 @@
             </p>
             <h2>Dependencies</h2>
             <p>
-                json2.js
+                &Nub; has the following dependencies additional to jquery:
+                <ul>
+                    <li><b><a href="http://www.json.org/json2.js">json2.js</a></b>:
+                        This is required by the 'remote' object to handle JSON data.
+                    </li>
+                    <li><b><a href="http://plugins.jquery.com/project/metadata">Metadata</a></b>:
+                        This jquery plugin is required to allow format options be defined on view elements.
+                    </li>
+                </ul>
             </p>
             <h2>Contact</h2>
             <p>
