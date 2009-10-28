@@ -107,12 +107,14 @@
             The layout file is a simple HTML file:
         </p>
         <pre class="brush: xml">
-            &lt;ul&gt;
-                &lt;li&gt;Name: &lt;b data="/data/organism/name"/&gt;&lt;/li&gt;
-                &lt;li&gt;Genus: &lt;b data="/data/organism/genus"/&gt;&lt;/li&gt;
-                &lt;li&gt;Family: &lt;b data="/data/organism/family"/&gt;&lt;/li&gt;
-                &lt;li&gt;Kingdom: &lt;b data="/data/organism/kingdom"/&gt;&lt;/li&gt;
-            &lt;/ul&gt;
+            <![CDATA[
+                <ul>
+                    <li>Name: <b data="/data/organism/name"/></li>
+                    <li>Genus: <b data="/data/organism/genus"/></li>
+                    <li>Family: <b data="/data/organism/family"/></li>
+                    <li>Kingdom: <b data="/data/organism/kingdom"/></li>
+                </ul>
+            ]]>
         </pre>
         <p>
             The setup file is necessary to register the view elements in the HTML once the layout has

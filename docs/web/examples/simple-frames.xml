@@ -44,10 +44,12 @@
             To use the module, include the <b>jquery.nub-frames.js</b> file in your page.
             Make sure that the file appears after the jquery.js and jquery-nub.js includes.
         </p>
-        <pre class="brush: js">
-            <script src="jquery.js"></script>
-            <script src="jquery.nub.js"></script>
-            <script src="jquery.nub-frames.js"></script>
+        <pre class="brush: xml">
+            <![CDATA[
+                <script src="jquery.js"></script>
+                <script src="jquery.nub.js"></script>
+                <script src="jquery.nub-frames.js"></script>
+            ]]>
         </pre>
         <h2>HTMLFrame</h2>
         <p>
@@ -60,7 +62,9 @@
             We give it an ID attribute so that it can be easily identified in the page:
         </p>
         <pre class="brush: xml">
-            <div id="test-frame"></div>
+            <![CDATA[
+                <div id="test-frame"></div>
+            ]]>
         </pre>
         <p>
             We initialize the element as an nub.frame using the <code>nubFrame()</code> jQuery function.
@@ -105,20 +109,22 @@
             Given a frame element defined like this:
         </p>
         <pre class="brush: xml">
-            <div id="test-switched-frame">
-                <div id="one">
-                    <b>One</b>:
-                    <img align="middle" src="one.png"/>
+            <![CDATA[
+                <div id="test-switched-frame">
+                    <div id="one">
+                        <b>PETE</b>:
+                        <img align="top" src="one.png">
+                    </div>
+                    <div id="two">
+                        <b>HDPE</b>:
+                        <img align="top" src="two.png">
+                    </div>
+                    <div id="three">
+                        <b>PVC</b>:
+                        <img align="top" src="three.png">
+                    </div>
                 </div>
-                <div id="two">
-                    <b>Two</b>:
-                    <img align="middle" src="two.png"/>
-                </div>
-                <div id="three">
-                    <b>Three</b>:
-                    <img align="middle" src="three.png"/>
-                </div>
-            </div>
+            ]]>
         </pre>
         <p>
             And the following setup code:
@@ -145,16 +151,16 @@
         <p>
             <div id="the-test-switched-frame" style="background:white;border:2pt solid;padding:1em;width:120px;">
                 <div id="one">
-                    <b>One</b>:
-                    <img align="middle" src="one.png"/>
+                    <b>PETE</b>:
+                    <img align="top" src="one.png"/>
                 </div>
                 <div id="two">
-                    <b>Two</b>:
-                    <img align="middle" src="two.png"/>
+                    <b>HDPE</b>:
+                    <img align="top" src="two.png"/>
                 </div>
                 <div id="three">
-                    <b>Three</b>:
-                    <img align="middle" src="three.png"/>
+                    <b>PVC</b>:
+                    <img align="top" src="three.png"/>
                 </div>
             </div>
         </p>

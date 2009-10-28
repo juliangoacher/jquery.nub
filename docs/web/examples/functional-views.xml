@@ -38,24 +38,26 @@
             First, display the array's items using a number of text inputs:
         </p>
         <pre class="brush: xml">
+            <![CDATA[
             <p>
-                <input name="list/0" size="5"/>
+                <input name="list/0" size="5">
             </p>
             <p>
-                <input name="list/1" size="5"/>
+                <input name="list/1" size="5">
             </p>
             <p>
-                <input name="list/2" size="5"/>
+                <input name="list/2" size="5">
             </p>
             <p>
-                <input name="list/3" size="5"/>
+                <input name="list/3" size="5">
             </p>
             <p>
-                <input name="list/4" size="5"/>
+                <input name="list/4" size="5">
             </p>
             <p>
                 Total: <b data="list/total"/>
             </p>
+            ]]>
         </pre>
         <p>
             Note the last paragraph which is used to display the list total.

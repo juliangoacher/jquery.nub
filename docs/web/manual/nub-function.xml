@@ -16,12 +16,14 @@
             HTML:
         </p>
         <pre class="brush: xml">
-            <div data="street1"></div>
-            <div data="street2"></div>
-            <div data="city"></div>
-            <div data="county"></div>
-            <div data="country"></div>
-            <div data="code"></div>
+            <![CDATA[
+                <div data="street1"></div>
+                <div data="street2"></div>
+                <div data="city"></div>
+                <div data="county"></div>
+                <div data="country"></div>
+                <div data="code"></div>
+            ]]>
         </pre>
         <p>
             These elements can then be registered with the MVC using a context path

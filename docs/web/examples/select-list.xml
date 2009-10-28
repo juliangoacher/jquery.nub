@@ -35,10 +35,12 @@
         </ul>
         <p>
             In the following sample, the select list is described using the following HTML:
-            <pre class="brush: js">
-                <select name="color" data="color-list">
-                    <option value="">Please select a color...</option>
-                </select>
+            <pre class="brush: xml">
+                <![CDATA[
+                    <select name="color" data="color-list">
+                        <option value="">Please select a color...</option>
+                    </select>
+                ]]>
             </pre>
         </p>
         <p>
