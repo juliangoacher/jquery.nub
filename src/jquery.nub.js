@@ -293,12 +293,12 @@
         };
         this.get = function( frame, opts ) {
             var val = frame.obj;
-            return opts['bare'] ? val : this.format( val, opts, frame.remaining() );
+            return opts['noformat'] ? val : this.format( val, opts, frame.remaining() );
                 
         };
         this.set = function( frame, opts, newVal ) {
             var oldVal = frame.obj;
-            var newVal = opts['bare'] ? newVal: this.parse( newVal, oldVal, opts, frame.remaining() );
+            var newVal = opts['noformat'] ? newVal: this.parse( newVal, oldVal, opts, frame.remaining() );
             frame.set( newVal );
             $.nub.notify('set', frame );
         };
@@ -500,6 +500,12 @@
             $(text).text( $.nub.get( path, undefined, opt ) );
         }
     };
+    // If the metadata plugin is available then utilise it when reading an element's format options.
+    if( $.metadata !== undefined ) {
+        $.nub.model.options.readFormatOptions = function( elem, fopts ) {
+            return $.extend( $.metadata.get( elem ), $.nub.model.options.formatOptions, fopts );
+        }
+    }
 
     /** Return a view for populating select lists. Source data must be either a 1D or 2D array. */
     function selectListView( elem, ref, context ) {

@@ -8,6 +8,7 @@
 <site id="jquery.mvc" title="jquery.n&ubreve;b" icon="favicon.ico">
     <head>
         <script src="jquery.js"/>
+        <script src="jquery.metadata.js"></script>
         <script src="jquery.nub.js"/>
         <script src="json2.js"/>
         <!-- syntax hilight stuff -->
