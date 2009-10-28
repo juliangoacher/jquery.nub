@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html [
+<!ENTITY ubreve "&#365;">
+<!ENTITY Nub "N&ubreve;b">
+]>
+<html>
+    <head>
+        <script src="jquery.nub-frames.js"/>
+        <script>
+            $(document).ready(function() {
+
+                $(':input').nub();
+
+                $('#the-test-frame').nubFrame({
+                    frame: new $.nub.frames.HTMLFrame(),
+                    keyRef: '/data/test-frame-url'
+                });
+                $.nub.set('/data/test-frame-url','examples/apple.html');
+
+                $('#the-test-switched-frame').nubFrame({
+                    'frame': new $.nub.frames.SwitchedHTMLFrame({ 'cid':'id' }),
+                    'keyRef': '/data/frame-cid'
+                });
+                $.nub.set('/data/frame-cid','one');
+
+            });
+        </script>
+    </head>
+    <body>
+        <p>
+            The nub.frames module builds on &Nub;'s core MVC functionality to provide a mechanism for
+            displaying multiple UI screens within a single web page.
+        </p>
+        <p>
+            A <b>nub.frame</b> is an HTML element which will be used to display some content.
+            The frame's content can be HTML loaded from the server or content generated from data in the
+            MVC's model, or more complex combinations of both these behaviours.
+            Each nub.frame has a <b>content key</b>.
+            This is a value stored in the MVC model which is used by the frame to generate its content.
+            For the simplest frame type, the content key is the URL of a file on the server containing
+            the frame's HTML content (see below).
+        </p>
+        <p>
+            To use the module, include the <b>jquery.nub-frames.js</b> file in your page.
+            Make sure that the file appears after the jquery.js and jquery-nub.js includes.
+        </p>
+        <pre class="brush: js">
+            <script src="jquery.js"></script>
+            <script src="jquery.nub.js"></script>
+            <script src="jquery.nub-frames.js"></script>
+        </pre>
+        <h2>HTMLFrame</h2>
+        <p>
+            An <b>HTMLFrame</b> reads a URL from the model and displays the contents of the file at that
+            URL as its content.
+            (The file is loaded using AJAX so, because of cross-domain scripting constraints, the URL
+            will normally be on the same server that the web page was loaded from).
+            To demonstrate this, first describe an element to use as the frame element.
+            A DIV element is suitable for this.
+            We give it an ID attribute so that it can be easily identified in the page:
+        </p>
+        <pre class="brush: xml">
+            <div id="test-frame"></div>
+        </pre>
+        <p>
+            We initialize the element as an nub.frame using the <code>nubFrame()</code> jQuery function.
+            We pass the function a single argument with two options:
+            <ul>
+                <li><code>frame</code>: This is the type of frame we want, here an HTMLFrame,</li>
+                <li><code>keyRef</code>: The content key reference path, i.e. where in the model to
+                    find the content key value.</li>
+            </ul>
+        </p>
+        <pre class="brush: js">
+            $('#test-frame').nubFrame({
+                'frame': new $.nub.frames.HTMLFrame(),
+                'keyRef': '/data/test-frame-url'
+            });
+        </pre>
+        <p>
+            (Note that the HTMLFrame constructor is located in the <code>$.nub.frames</code> namespace).
+        </p>
+        <p>
+            So now the 'test-frame' div will display the contents of whatever URL is placed into the MVC
+            model at '/data/test-frame-url'.
+            There is a demonstration of this below.
+            The select list contains a number of URLs.
+            Selecting an item from the list will update the value stored at '/data/test-frame-url', which
+            in turn will cause the nub.frame to refresh and display the contents of that URL.
+        </p>
+        <p>
+            <select name="/data/test-frame-url">
+                <option>examples/apple.html</option>
+                <option>examples/mollusca.html</option>
+                <option>examples/zebra.html</option>
+            </select>
+            <div id="the-test-frame"
+            style="border:2pt solid black;padding:1em;width:400px;height:200px;overflow:scroll;background:white;">
+            </div>
+        </p>
+        <h2>SwitchedHTMLFrame</h2>
+        <p>
+            A <b>SwitchedHTMLFrame</b> is used to control the visibility of multiple child elements to the
+            frame element.
+            Given a frame element defined like this:
+        </p>
+        <pre class="brush: xml">
+            <div id="test-switched-frame">
+                <div id="one">
+                    <b>One</b>:
+                    <img align="middle" src="one.png"/>
+                </div>
+                <div id="two">
+                    <b>Two</b>:
+                    <img align="middle" src="two.png"/>
+                </div>
+                <div id="three">
+                    <b>Three</b>:
+                    <img align="middle" src="three.png"/>
+                </div>
+            </div>
+        </pre>
+        <p>
+            And the following setup code:
+        </p>
+        <pre class="brush: js">
+            $('#test-switched-frame').nubFrame({
+                'frame': new $.nub.frames.SwitchedHTMLFrame({ 'cid':'id' }),
+                'keyRef': '/data/frame-cid'
+            });
+        </pre>
+        <p>
+            We can then control which child div of the frame element is visible by setting the value
+            in the model at <code>/data/frame-cid</code>.
+            Try it here:
+        </p>
+        <p>
+            Change the content key value 
+            <select name="/data/frame-cid">
+                <option>one</option>
+                <option>two</option>
+                <option>three</option>
+            </select>
+        </p>
+        <p>
+            <div id="the-test-switched-frame" style="background:white;border:2pt solid;padding:1em;width:120px;">
+                <div id="one">
+                    <b>One</b>:
+                    <img align="middle" src="one.png"/>
+                </div>
+                <div id="two">
+                    <b>Two</b>:
+                    <img align="middle" src="two.png"/>
+                </div>
+                <div id="three">
+                    <b>Three</b>:
+                    <img align="middle" src="three.png"/>
+                </div>
+            </div>
+        </p>
+    </body>
+</html>

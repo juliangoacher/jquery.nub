@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE site [
+<!ENTITY nbsp "&#x000A0;">
+<!ENTITY copy "&#x00A9;">
+<!ENTITY ubreve "&#365;">
+<!ENTITY Nub "N&ubreve;b">
+]>
+<site id="jquery.mvc" title="jquery.n&ubreve;b" icon="favicon.ico">
+    <head>
+        <script src="jquery.js"/>
+        <script src="jquery.nub.js"/>
+        <script src="json2.js"/>
+        <!-- syntax hilight stuff -->
+        <script src="scripts/shCore.js"/>
+        <script src="scripts/shBrushJScript.js"/>
+        <script src="scripts/shBrushXml.js"/>
+        <link rel="stylesheet" type="text/css" href="styles/shCore.css"/>
+        <link rel="stylesheet" type="text/css" href="styles/shThemeDefault.css"/>
+        <script>SyntaxHighlighter.all();</script>
+    </head>
+    <page id="index" title="Introduction">
+        <head>
+            <script>
+                $(document).ready(function() {
+                    $('[data]').nub();
+                    $(':input').nub();
+                    $.nub.set('/data/animal','zebra');
+                });
+            </script>
+        </head>
+        <body>
+            <p>
+                <b>&Nub;</b> is a <a href="http://jquery.com/">jQuery</a> plugin which provides
+                <b>model-view-controller</b> (MVC) functionality to a jQuery enabled web page.
+            </p>
+            <p>
+                &Nub; provides a central data model against which views can be registered.
+                Views will be notified as the data in the model is updated and modified.
+                The data in the model can be generated locally of loaded from the server using AJAX.
+            </p>
+            <p>
+                &Nub; allows type information to be associated with data in the model.
+                This information can be used to format the data displayed by a view,
+                or to parse data entered through a form input.
+            </p>
+            <p>
+                An optional additional module, <b>nub.frames</b>, uses the core MVC functionality to
+                control the content displayed by the web page.
+                This can be used to describe a multi-screen web application within a single HTML page,
+                and allows a multi-screen application to be described in a modular fashion.
+            </p>
+            <h2>&Nub; in 30 seconds</h2>
+            <p>
+                Essentially, the &Nub; plugin is a mechanism for displaying and updating values stored
+                in a central model.
+                The following steps demonstrate a simple use case:
+            </p>
+            <ol>
+                <li>
+                    First, place a 'data' attribute onto an element to be used to display a data value:
+                    <pre class="brush: xml">
+                        &lt;span data="/data/animal"&gt;
+                    </pre>
+                </li>
+                <li>
+                    Next, register the view element with the MVC using the following jQuery code:
+                    <pre class="brush: js">
+                        $('[data]').nub();
+                    </pre>
+                </li>
+                <li>
+                    Create a form input element and use its 'name' attribute to map the input to the data item:
+                    <pre class="brush: xml">
+                        &lt;input name="/data/animal"&gt;
+                    </pre>
+                </li>
+                <li>
+                    Then register the input with the model using the same jQuery method:
+                    <pre class="brush: js">
+                        $(':input').nub();
+                    </pre>
+                </li>
+            </ol>
+            <p>
+                A value now entered through the input will be displayed by the view element.
+                Try it here:
+                <p>
+                    Enter value: <input name="/data/animal"/>
+                </p>
+                <p>
+                    The value is '<b><span data="/data/animal"/></b>'
+                </p>
+            </p>
+            <p>
+                (Note that the input relies on the 'onchange' handler, so you will have to move
+                focus from the input after entering a value for the model to be updated).
+            </p>
+            <h2>What next?</h2>
+            <ul>
+                <li>A complete overview is given <a href="overview.html">here</a>, or see the examples.</li>
+                <li>The plugin can be downloaded from <a href="download.html">this page</a>.</li>
+                <li>Full API documentation is available <a href="documentation/basics.html">here</a>.</li>
+            </ul>
+        </body>
+    </page>
+    <page id="overview" title="Overview" href="overview.xml"/>
+    <page id="download" title="Download Plugin">
+        <p>
+            The latest version can be downloaded from here:
+            <ul>
+                <li>jQuery.nub core: <a href="">jquery.nub.js</a></li>
+                <li>jQuery.nub frames: <a href="">jquery.nub-frames.js</a></li>
+            </ul>
+        </p>
+        <p>
+            The complete distribution, including minified versions of the plugin files can be
+            downloaded from here:
+            <ul>
+                <li><a href="">jquery.nub.zip</a></li>
+                <li><a href="">jquery.nub.tgz</a></li>
+            </ul>
+        </p>
+        <p>
+            The full source code repository is available <a href="">on GitHub</a>.
+        </p>
+        <h2>Dependencies</h2>
+        <p>
+            json2.js
+        </p>
+        <h2>Contact</h2>
+        <p>
+            <script>
+                var y=''+((22/7)*(Math.pow(10,7)));
+                var a=['.','@','jquery','nub','.','pi','com','innerfunction'];
+                for( var i=0;i&lt;7;i++)document.write(a[Number(y[i])-1]);
+            </script>
+        </p>
+    </page>
+    <section id="examples" title="Examples">
+        <page id="select-list" title="Select lists" href="examples/select-list.xml"/>
+        <!--
+        <page id="model-api" title="Manipulating the model" href="examples/model-api.xml"/>
+        -->
+        <page id="functional-views" title="Functional views" href="examples/functional-views.xml"/>
+        <page id="data-types" title="Custom data types" href="examples/data-types.xml"/>
+        <page id="remote-data" title="Remote data" href="examples/remote-data.xml"/>
+        <page id="simple-frames" title="Basic nub.frames" href="examples/simple-frames.xml"/>
+        <page id="dynamic-frames" title="Dynamic nub.frames" href="examples/dynamic-frames.xml"/>
+    </section>
+    <section id="documentation" title="API Documentation">
+        <page id="nub-function" title="The nub() function" href="manual/nub-function.xml"/>
+        <page id="methods" title="Methods" href="manual/methods.xml"/>
+        <page id="remote" title="Remote data" href="manual/remote.xml"/>
+        <page id="data-types" title="Custom data types" href="manual/data-types.xml"/>
+        <page id="frames" title="Navigation using frames" href="manual/frames.xml"/>
+    </section>
+    <footer>
+        <!--
+        <entity name="nbsp"/>
+        -->
+        <a href="http://www.innerfunction.com/">
+            <img src="if-logo-small.png" border="0" align="center"
+               title="InnerFunction Ltd." alt="InnerFunction Ltd."/>
+        </a>
+        <i><entity name="copy"/> InnerFunction 2009.</i>
+    </footer>
+</site>

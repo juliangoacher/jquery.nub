@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<html>
+    <head>
+        <script src="jquery.nub-frames.js"/>
+        <script>
+            $(document).ready(function() {
+
+                $(':input').nub();
+
+                $('#load-layout').click(function() {
+                    $.nub.set('/data/dynamic-key','info');
+                });
+
+                $('#dynamic-frame').nubFrame({
+                    'frame': new $.nub.frames.DynamicFrame({
+                        makeLayoutURI: function( key ) {
+                            return key+'.html';
+                        }
+                    }),
+                    'keyRef':'/data/dynamic-key'
+                });
+
+                var organisms = {
+                    'Apple':{
+                        name:'Malus domestica', genus:'Malus', family:'Rosaceae', kingdom:'Plantae'
+                    },
+                    'Zebra':{
+                        name:'Equus zebra', genus:'Equus', family:'Equidae', kingdom:'Animalia'
+                    }
+                };
+
+                $.nub.view('/data/selected-organism',function() {
+                    var organism = $.nub.get('/data/selected-organism');
+                    $.nub.set('/data/organism', organisms[organism]);
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <!-- TODO: Rework the example to use a side menu instead of a select; have at least two different
+            page types, with the menu items switching between those types, and some menu items changing
+            only the data content -->
+
+        <h2>DynamicFrame</h2>
+        <p>
+            A <b>DynamicFrame</b> is a powerful frame type which allow a complex, multi-screen UI to be
+            described in a modular fashion.
+            A DynamicFrame will load two files when its content key is updated.
+            The first file is called the <i>layout file</i>, and describes the HTML content to be
+            displayed by the frame.
+            The second file is called the <i>setup file</i>, and contains JavaScript to be executed on the
+            layout HTML to activate any functionality contained by the layout.
+        </p>
+        <p>
+            A DynamicFrame is initialized with the following options:
+            <ul>
+                <li><b>makeLayoutURI</b> is a function which takes the content key value as its argument
+                    and returns the URL of a layout file. The frame will load the HTML in the layout file
+                    using an AJAX call and display the content in the frame element.
+                </li>
+                <li><b>makeSetupURI</b> is a function which takes the content key value as its argument
+                    and returns the URL of a setup file. The setup file should contain JavaScript code;
+                    the frame will execute the code once the layout HTML has been loaded.
+                    The default makeSetupURI() function returns the layout URL with <code>.setup.js</code>
+                    appended.
+                </li>
+            </ul>
+        </p>
+        <p>
+            The setup file must contain its setup code within a function, and the file when evaluated must
+            return that function (this will happen if the file's contents are wrapped by an anonymous
+            function).
+            This function is called the <b>setup function</b>.
+            The function is invoked by the frame as a method of the frame's content element once the HTML
+            content has loaded - i.e. the 'this' keyword will evaluate to the content element.
+            Typically, the setup function will contain a number of jQuery calls to attach required
+            functionality to the frame's layout.
+        </p>
+        <p>
+            In this example, the <code>makeLayoutURI</code> function simple appends <code>.html</code> to
+            the content key:
+        </p>
+        <pre class="brush: js">
+            function( key ) {
+                return key+'.html';
+            }
+        </pre>
+        <p>
+            The example will use the default <code>makeSetupURI</code>, so if the content key is 
+            <code>info</code> then the layout URL will be <code>info.html</code> and the setup URL
+            will be <code>info.html.setup.js</code>.
+        </p>
+        <p>
+            The frame can be initialized with this code:
+        </p>
+        <pre class="brush: js">
+            $('#dynamic-frame').nubFrame({
+                'frame': new $.nub.frames.DynamicFrame({
+                    makeLayoutURI: function( key ) {
+                        return key+'.html';
+                    }
+                }),
+                'keyRef':'/data/dynamic-key'
+            });
+        </pre>
+        <p>
+            The layout file is a simple HTML file:
+        </p>
+        <pre class="brush: xml">
+            &lt;ul&gt;
+                &lt;li&gt;Name: &lt;b data="/data/organism/name"/&gt;&lt;/li&gt;
+                &lt;li&gt;Genus: &lt;b data="/data/organism/genus"/&gt;&lt;/li&gt;
+                &lt;li&gt;Family: &lt;b data="/data/organism/family"/&gt;&lt;/li&gt;
+                &lt;li&gt;Kingdom: &lt;b data="/data/organism/kingdom"/&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+        </pre>
+        <p>
+            The setup file is necessary to register the view elements in the HTML once the layout has
+            loaded:
+        </p>
+        <pre class="brush: js">
+            function() {
+                $('[data]', this ).nub();
+            }
+        </pre>
+        <p>
+            Note how the setup code is contained by an anonymous function.
+            Its also worth noting how the 'this' keyword is used to provide a context element to the
+            jQuery selector - this is to prevent the setup code being applied to page content which has
+            already been loaded and initialized.
+        </p>
+        <p>
+            You can try the example here. Click the button to load the layout, then use the select to
+            change the model data and notice the displayed data updating.
+        </p>
+        <p>
+            <input type="button" id="load-layout" value="Load layout"/>
+            <select name="/data/selected-organism">
+                <option>Please select...</option>
+                <option>Apple</option>
+                <option>Zebra</option>
+            </select>
+        </p>
+        <p>
+            <div id="dynamic-frame"/>
+        </p>
+    </body>
+</html>

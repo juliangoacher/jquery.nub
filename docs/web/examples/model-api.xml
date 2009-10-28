@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<html>
+    <head>
+    </head>
+    <body>
+        <p>
+            Values in the model can be modified programatically using the jQuery.MVC model API.
+        </p>
+        <p>
+            A value can be read from the model using the <b>$.mvc.get()</b> method:
+        </p>
+        <pre class="brush: js">
+            $.mvc.get('/data/address/city');
+        </pre>
+        <p>
+            Values can be set in the model using the <b>$.mvc.set()</b> method:
+        </p>
+        <pre class="brush: js">
+            $.mvc.set('/data/address/city','Amsterdam');
+        </pre>
+        <p>
+            Note that the model data can be accessed directly at $.mvc.model, e.g. the same data item
+            described above can be accessed at <b>$.mvc.model.data.address.city</b>. However, accessing
+            data in this way bypasses the MVC, and so any views on the data will not be notified of
+            updates if the value is modified directly in this way.
+        </p>
+    </body>
+</html>

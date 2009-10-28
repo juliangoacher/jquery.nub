@@ -1,0 +1,100 @@
+<html>
+    <body>
+        <h2>$( <i>select</i> ).nub( <i>context</i> | <i>options</i> | <i>methods</i> )</h2>
+        <p>
+            Register view elements with the MVC.
+        </p>
+        <h3>context</h3>
+        <p>
+            The context is a string which specifies a <i>context path</i> for relative path references.
+            This can be a useful shorthand when many view elements reference different properties of the
+            same base object.
+        </p>
+        <p>
+            For example, if there is a 'customer' object with an 'address' property in the model located
+            at <code>/data/customer</code>, then we can display the address fields using the following
+            HTML:
+        </p>
+        <pre class="brush: xml">
+            <div data="street1"></div>
+            <div data="street2"></div>
+            <div data="city"></div>
+            <div data="county"></div>
+            <div data="country"></div>
+            <div data="code"></div>
+        </pre>
+        <p>
+            These elements can then be registered with the MVC using a context path
+            <code>/data/customer/address</code>:
+        </p>
+        <pre class="brush: js">
+            $('[data]').nub('/data/customer/address');
+        </pre>
+        <h3>options</h3>
+        <p>
+            Options are used to customize the setup and behaviour of view elements.
+            All options have defaults which are defined in the MVC model at
+            <code>$.nub.model.options</code>, and can be replaced to alter the default behaviour
+            of the MVC.
+        </p>
+        <table class="api">
+            <tr>
+                <td><b>context</b></td>
+                <td>A context path for relative path references.</td>
+            </tr>
+            <tr>
+                <td><b>formatOptions</b></td>
+                <td>A set of format options. (Contents are type specific).</td>
+            </tr>
+            <tr>
+                <td><b>getRef</b></td>
+                <td>A function for resolving an element's data reference.
+                    Defaults to <code>$.nub.model.options.getRef</code>, which reads the element's
+                    <b>data</b> attribute.
+                </td>
+            </tr>
+            <tr>
+                <td><b>getInputRef</b></td>
+                <td>A function for resolving an input element's data reference.
+                    Defaults to <code>$.nub.model.options.getInputRef</code>, which reads the element's
+                    <b>name</b> attribute.
+                </td>
+            </tr>
+            <tr>
+                <td><b>readFormatOptions</b></td>
+                <td>A function for resolving the format options associated with an element.
+                    Defaults to <code>$.nub.model.options.readFormatOptions</code>, which doesn't
+                    read any information from the element.
+                </td>
+            </tr>
+        </table>
+        <h3>methods</h3>
+        <p>
+            These additional methods allow views to be temporarily disabled or completely removed.
+        </p>
+        <table class="api">
+            <tr>
+                <td><b>disable</b></td>
+                <td>Disable the view associated with an element.</td>
+            </tr>
+            <tr>
+                <td><b>enable</b></td>
+                <td>Re-enable the view associated with an element.
+                    (Assumes the view was previously disabled).
+                </td>
+            </tr>
+            <tr>
+                <td><b>destroy</b></td>
+                <td>Destroy the view associated with an element.
+                    Cleans up all resources used by the view.
+                </td>
+            </tr>
+        </table>
+        <p>
+            For example, to remove all views previously registered on a page:
+        </p>
+        <pre class="brush: js">
+            $('[data]').nub('destroy');
+        </pre>
+    </body>
+</html>

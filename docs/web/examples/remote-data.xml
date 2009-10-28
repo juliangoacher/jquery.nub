@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html [
+<!ENTITY ubreve "&#365;">
+<!ENTITY Nub "N&ubreve;b">
+]>
+<html>
+    <head>
+        <script>
+            $(document).ready(function() {
+                $.nub.remote('zebra');
+                var zebra = $.nub.get('/remote/zebra');
+                $('#load-data').click(function() {
+                    zebra.get('zebra-data.json');
+                    $(this).unbind('click').attr('disabled','true');
+                });
+                $('[data]').nub('/remote/zebra');
+            });
+        </script>
+    </head>
+    <body>
+        <p>
+            &Nub; can be used to load data from the server using AJAX and then display that data on the page.
+            To do this, &Nub; uses its RemoteMVCType.
+        </p>
+        <p>
+            In this example, the following JSON document will be loaded from the server:
+        </p>
+        <pre class="brush: js">
+            {
+                "name":         "Equus quagga",
+                "genus":        "Equus",
+                "sub-genus":    "Hippotigris Dolichohippus",
+                "family":       "Equidae",
+                "class":        "Mammalia",
+                "kingdom":      "Animalia"
+            }
+        </pre>
+        <p>
+            To start, we specify a location in the model to load the data into (this is sometimes called the
+            <i>load point</i>).
+            This is done using the <b>$.nub.remote()</b> function:
+        </p>
+        <pre class="brush: js">
+            $.nub.remote('zebra');
+        </pre>
+        <p>
+            Note that the remote() function places all load points under the <b>/remote</b> location in the
+            model, i.e. the code above will create a load point at <b>/remote/zebra</b>.
+        </p>
+        <p>
+            We can now fetch the remote object from the model:
+        </p>
+        <pre class="brush: js">
+            var zebra = $.nub.get('/remote/zebra');
+        </pre>
+        <p>
+            Inspecting this object (e.g. using Firebug) you will see that it has 'meta' and 'data' properties.
+            The 'data' property contains the data actually loaded from the server - this will be empty at
+            this stage, because no data has been loaded.
+            The 'meta' property contains additional information about the object,
+            including the URI the data was loaded from,
+            a 'status' property indicating whether data is loading or has been loaded,
+            and an 'error' property if an error occurred whilst loading the data.
+        </p>
+        <p>
+            To actually load the data, invoke the <b>get()</b> method on the remote object.
+            This will perform a HTTP get request against the specified URI:
+        </p>
+        <pre class="brush: js">
+            zebra.get('zebra-data.json');
+        </pre>
+        <p>
+            If the get request is successful then the loaded document's data will now be found under the
+            remote object's 'data' property.
+            You can try this yourself by clicking the button below.
+        </p>
+        <p>
+            <input type="button" id="load-data" value="Click here to request data"/>
+            <ul>
+                <li>Load status: <b data="meta/status"/></li>
+                <li>Name:        <b data="data/name"/></li>
+                <li>Genus:       <b data="data/genus"/></li>
+                <li>Sub-genus:   <b data="data/sub-genus"/></li>
+                <li>Family:      <b data="data/family"/></li>
+                <li>Class:       <b data="data/class"/></li>
+                <li>Kingdom:     <b data="data/kingdom"/></li>
+            </ul>
+        </p>
+    </body>
+</html>

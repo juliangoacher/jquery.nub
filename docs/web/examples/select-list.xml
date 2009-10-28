@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<html>
+    <head>
+        <script>
+            $(document).ready(function() {
+                $(':input').nub('/data');
+                $('[data]').nub('/data');
+                $.nub.set('/data/color-list',['Red','Green','Blue','White']);
+                $('#change-color-list').click(function() {
+                    $.nub.set('/data/color-list',['Orange','Mauve','Brown','Black']);
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <p>
+            A select list can read its list values from the MVC model, as well as being used to display and
+            update values in the model. If a select list element has a 'data' attribute then the list's items
+            are generated using the data stored in the model at that location.
+        </p>
+        <ul>
+            <li>
+                The list data must be specified as an array.
+            </li>
+            <li>
+                A 2-dimensional array can be used to specify (value,label) tuples for each list item.
+            </li>
+            <li>
+                The select list is refreshed whenever the list data is updated in the model.
+            </li>
+            <li>
+                Any options defined in the select list's HTML are preserved and are always present on the
+                list (this is useful for 'Please select...' options).
+            </li>
+        </ul>
+        <p>
+            In the following sample, the select list is described using the following HTML:
+            <pre class="brush: js">
+                <select name="color" data="color-list">
+                    <option value="">Please select a color...</option>
+                </select>
+            </pre>
+        </p>
+        <p>
+            The list element is registered using the standard method
+            (Note the context path passed to the nub function):
+            <pre class="brush: js">
+                $(':input').nub('/data');
+            </pre>
+        </p>
+        <p>
+            Selecting a list item will update the value in the model:
+        </p>
+        <p>
+            <select name="/data/color" data="/data/color-list">
+                <option value="">Please select a color...</option>
+            </select>
+        </p>
+        <p>
+            The selected color is displayed here: '<b data="/data/color"></b>'.
+        </p>
+        <p>
+            The following code can be used to change the list displayed by the select:
+        </p>
+        <pre class="brush: js">
+            $.nub.set('/data/color-list',['Orange','Mauve','Brown','Black']);
+        </pre>
+        <p>
+            Click <input type="button" id="change-color-list" value="here"/> to run this code now.
+            The select list's values will change from [ <i>Red, Green, Blue, White</i> ] to
+            [ <i>Orange, Mauve, Brown, Black</i> ].
+        </p>
+    </body>
+</html>

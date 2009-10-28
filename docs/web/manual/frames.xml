@@ -1,0 +1,149 @@
+<html>
+    <body>
+        <h2>$( <i>select</i> ).nubFrame( <i>options</i> )</h2>
+        <p>
+            Instantiate an element as a nub.frame.
+        </p>
+        <h3>Options</h3>
+        <table class="api">
+            <tr>
+                <td><b>frame</b></td>
+                <td>
+                    An instantiated frame object.
+                    The standard frame objects are described below, but any object can be used providing
+                    it has a suitable update() method.
+                    <p/>
+                    If no frame property is specified then a basic
+                    <a href="#frame-object">frame object</a> will be instantiated with the 'options' object
+                    passed to the constructor.
+                    This allows the basic frame to be customized by providing implementions of its
+                    standard methods.
+                </td>
+            </tr>
+            <tr>
+                <td><b>keyRef</b></td>
+                <td>The content key reference. (Optional).</td>
+            </tr>
+            <tr>
+                <td><b>getKeyRef</b></td>
+                <td>
+                    A function to read the content key reference from the frame element. (Optional).
+                </td>
+            </tr>
+        </table>
+        <p>
+            The following sections describe the standard frame objects.
+        </p>
+        <h2>HTMLFrame</h2>
+        <p>
+            This is a simple frame type which loads content using AJAX.
+            Its content key value is the URL from which the content will be loaded.
+            The frame's constructor is at <code>$.nub.frames.HTMLFrame</code>.
+        </p>
+        <h2>SwitchedHTMLFrame</h2>
+        <p>
+            This is a simple frame type whose frame element should contain multiple child elements
+            when initialized.
+            Each child element should have a unique ID provided by some attribute.
+            By default, the 'id' attribute is used, but this can be changed by passing an alternative
+            attribute name to the constructor.
+            The frame object will display whichever child attribute has an ID value matching the
+            content key value and will hide all the other child elements.
+            If any child has the ID value '<code>$default</code>' then this will be used as a default,
+            and will be displayed whenever no other child element has an ID matching the content key.
+        </p>
+        <p>
+            (Note that this frame type will only manage the display of <i>immediate</i> child elements
+            with a suitable ID attribute;
+            any children without the configured ID attribute will stay visible whatever the content key
+            value is.
+        </p>
+        <p>
+            The frame's constructor is at <code>$.nub.frames.SwitchedHTMLFrame</code>.
+        </p>
+        <h2>DynamicFrame</h2>
+        <p>
+            The DynamicFrame object is the most complex of the standard frame types and provides a
+            mechanism for describing frame contents in a modular fashion.
+        </p>
+        <p>
+            A DynamicFrame will load two files when updated.
+            The first file should contain the static HTML content and is called the <i>layout</i>.
+            The second file is a JavaScript file used to apply functionality to the layout and is called
+            the <i>setup</i>.
+            The setup file will be loaded and evaluated by the frame after the layout has been loaded.
+            It is important that the setup file evaluates to a single JavaScript function.
+            This can be acheived by encapsulating all the setup code in a single anonymous function.
+            The function will be invoked as a method on the frame element, i.e. the frame element is
+            available to the setup code using the '<code>this</code>' keyword.
+            If using jQuery selectors in the setup code it is a good idea to qualify the selector with
+            the frame element, to avoid applying the setup code to elements not within the frame.
+        </p>
+        <p>
+            A DynamicFrame will maintain a cache of previously loaded layouts as its content changes,
+            and so won't generate unnecessary load if continuously switched between a small number of layouts.
+        </p>
+        <p>
+            The DynamicFrame constructor is at <code>$.nub.frames.DynamicFrame</code>.
+            A DynamicFrame should be instantiated by passing it an 'options' object.
+            The 'options' object should provide implementations of the following methods.
+        </p>
+        <h3>makeLayoutURI( <i>key</i> )</h3>
+        <p>
+            This method is used by the frame to generate the URL of the layout file from the frame content key.
+            The default implementation returns the content key unchanged.
+        </p>
+        <h3>makeSetupURI( <i>key</i> )</h3>
+        <p>
+            This method is used by the frame to generate the URL of the setup file from the frame content key.
+            The default implementation returns the <i>layout URL</i> with <code>.setup.js</code> appended.
+        </p>
+        <h2>Custom frames from scratch</h2>
+        <p>
+            Any JavaScript object which implements the following method can be used as a nub.frame:
+        </p>
+        <h3>update( <i>elem</i>, <i>keyRef</i>, <i>context</i> )</h3>
+        <p>
+            This method is used to update the frame after its content key value has changed.
+            <table class="api">
+                <tr>
+                    <td><b>elem</b></td>
+                    <td>The frame element. The frame's content must be placed within this element.</td>
+                </tr>
+                <tr>
+                    <td><b>keyRef</b>, <b>context</b></td>
+                    <td>Together, these identify the frame's content key.</td>
+                </tr>
+            </table>
+        </p>
+        <h2 id="frame-object">Frame object</h2>
+        <p>
+            The basic Frame object is provided as a convenient way to implement more complex frame types.
+            The core implementation supplies no functionality, this must be provided by implementing the
+            following methods:
+        </p>
+        <h3>init( <i>elem</i> )</h3>
+        <p>
+            Initialize the frame element before use.
+        </p>
+        <h3>loadLayout( <i>elem</i>, <i>key</i> )</h3>
+        <p>
+            Load the content layout.
+            <code>elem</code> is the frame element,
+            <code>key</code> is the content key value.
+        </p>
+        <h3>loadData( <i>key</i> )</h3>
+        <p>
+            The purpose of this method is to ensure that any data appropriate for the content key
+            is present in the model.
+            A typical impementation would generate a URL from the key and use that to load data into
+            the model using a 'remote' type.
+        </p>
+        <h3>onupdate( <i>elem</i>, <i>keyRef</i>, <i>context</i> )</h3>
+        <p>
+            A callback function, invoked after a frame update.
+            <code>elem</code> is the frame element,
+            <code>keyRef</code> and <code>context</code> identify the content key.
+        </p>
+    </body>
+</html>

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html [
+<!ENTITY ubreve "&#365;">
+<!ENTITY Nub "N&ubreve;b">
+]>
+<html>
+    <head>
+        <script>
+            var daysOfWeek = [
+                ['MON','Monday'],
+                ['TUE','Tuesday'],
+                ['WED','Wednesday'],
+                ['THU','Thursday'],
+                ['FRI','Friday'],
+                ['SAT','Saturday'],
+                ['SUN','Sunday']
+            ];
+            $.nub.set('/data/daysOfWeek', daysOfWeek);
+            var DaysOfWeekType = new $.nub.DataMVCType({
+                format: function( value ) {
+                    return this.labels[value]||value;
+                }
+            });
+            // Initialize a lookup map of codes -> labels
+            DaysOfWeekType.labels = {};
+            for( var i = 0; i &lt; daysOfWeek.length; i++ ) {
+                DaysOfWeekType.labels[daysOfWeek[i][0]] = daysOfWeek[i][1];
+            }
+            $.nub.type('/data/today', DaysOfWeekType );
+            $(document).ready(function() {
+                $(':input').nub('/data');
+                // Note: Don't want to register the select list twice (has a data attr).
+                $('[data]').filter(':not(:input)').nub('/data');
+            });
+        </script>
+    </head>
+    <body>
+        <p>
+            &Nub; allows type information to be associated with data in the model.
+            This ability is used by the MVC to attach functionality to data stored in the model
+            (e.g. see the <a href="examples-remote-data.html">remote data example</a>).
+            It can also be used to format model data for display,
+            or to parse data entered into a form input before it is placed into the model.
+        </p>
+        <p>
+            The easiest way to implement a custom data type is by using the built-in <b>DataMVCType</b>.
+            The following examples show how to use DataMVCType to implement a simple numeric type and an
+            enumerated data type.
+        </p>
+        <h2>A simple numeric type</h2>
+        <p>
+            This type will store its value in the model as a number and always display the number with
+            two fixed decimal places.
+        </p>
+        <p>
+            The type is implemented by extending the DataMVCType with custom methods for initializing a
+            data value and for formatting and parsing values:
+        </p>
+        <pre class="brush: js">
+            var SimpleNumericType = new $.nub.DataMVCType({
+                make: function( value ) {
+                    return Number( value );
+                },
+                format: function( value ) {
+                    return value === undefined ? '' : value.toFixed( 2 );
+                },
+                parse: function( value ) {
+                    return Number( value );
+                }
+            });
+        </pre>
+        <p>
+            The <b>format</b> function is passed the value stored in the model and uses the
+            <a href="https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Number/toFixed">
+                Number.toFixed()
+            </a> function to convert the number to a string.
+            The <b>parse</b> function should do the reverse of the format() function,
+            here it instantiates a new number using its value argument.
+        </p>
+        <p>
+            The data type is used by binding it to a location in the model using the
+            <b>$.nub.type()</b> function:
+        </p>
+        <pre class="brush: js">
+            $.nub.type('/data/amount', SimpleNumericType );
+        </pre>
+        <h2>An enumerated data type</h2>
+        <p>
+            An enumerated type has a preset number of fixed values or codes. Often it is useful to be able
+            to display readable labels for these codes. In this example, our type will enumerate the days
+            of the week. Each week day will have an abbreviated code and a label:
+        </p>
+        <pre class="brush: js">
+            var daysOfWeek = [
+                ['MON','Monday'],
+                ['TUE','Tuesday'],
+                ['WED','Wednesday'],
+                ['THU','Thursday'],
+                ['FRI','Friday'],
+                ['SAT','Saturday'],
+                ['SUN','Sunday']
+            ];
+        </pre>
+        <p>
+            We can store this list in the model and use it later to generate a select list of weekdays:
+        </p>
+        <pre class="brush: js">
+            $.nub.set('/data/daysOfWeek', daysOfWeek);
+        </pre>
+        <p>
+            Our enumerated type will store the abbreviated day code in the model as the data value and
+            format values by using the appropriate label.
+            In this example, we are only concerned with formatting the value as we will be using a select
+            list to enter the value,
+            and therefore the value passed into the model will be the abbreviated day code:
+        </p>
+        <pre class="brush: js">
+            var DaysOfWeekType = new $.nub.DataMVCType({
+                format: function( value ) {
+                    return this.labels[value]||value;
+                }
+            });
+            // Initialize a lookup map of codes -> labels
+            DaysOfWeekType.labels = {};
+            for( var i = 0; i &lt; daysOfWeek.length; i++ ) {
+                DaysOfWeekType.labels[daysOfWeek[i][0]] = daysOfWeek[i][1];
+            }
+        </pre>
+        <p>
+            The DaysOfWeekType has a format() method which returns the label associated with a value
+            by using a map of values onto labels, or returns the value as is if a suitable label can't
+            be found.
+            The type is used by binding it to a model location:
+        </p>
+        <pre class="brush: js">
+            $.nub.type('/data/today', DaysOfWeekType );
+        </pre>
+        <p>
+            We can bypass the type formatter by using the '<b>noformat</b>' format option.
+            This option instructs the MVC to return a data value as it appears in the model, with no
+            formatting applied.
+            We use it below to confirm that the value stored in the model is different from the
+            formatted representation.
+        </p>
+        <p>
+            You can test the result here:
+        </p>
+        <p>
+            <select name="today" data="daysOfWeek">
+                <option value="">Please select...</option>
+            </select>
+            <entity name="nbsp"/>
+            Today is '<b data="today"/>'.
+            The value in the model is '<b data="today" class="{ noformat: true }"/>'.
+        </p>
+    </body>
+</html>

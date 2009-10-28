@@ -1,0 +1,163 @@
+<html>
+    <body>
+        <h2>$.nub.remote( <i>options</i> | <i>path</i> )</h2>
+        <p>
+            Create a remote data type in the model.
+        </p>
+        <h3>options</h3>
+        <p>
+            The following options are available to setup the remote type:
+        </p>
+        <table class="api">
+            <tr>
+                <td><b>path</b></td>
+                <td>Where in the model to create the remote type.
+                    Normally, this is a relative path which is resolved in the <code>/remote</code> context.
+                    e.g. the method call <code>$.nub.remote( { path: 'accounts' } )</code> will create the
+                    remote type at <code>/remote/accounts</code>. Required.</td>
+            </tr>
+            <tr>
+                <td><b>uri</b></td>
+                <td>A URI to initially load data from. Optional.</td>
+            </tr>
+            <tr>
+                <td><b>methods</b></td>
+                <td>The default behaviour of the remote type can be customized by initializing it with
+                    alternative lifecycle methods.
+                    The available methods are:
+                    <ul>
+                        <li><b>serialize</b>: A method to serialize the data.
+                            The default method serializes the remote object's 'data' property (see below)
+                            to JSON.
+                            Alternative methods can use this method to i.e. serialize to HTTP parameter
+                            name/value pairs.
+                        </li>
+                        <li><b>onsubmit</b> A method to process a data request before it is submitted.
+                            See below for more details.
+                        </li>
+                        <li><b>onload</b> A method to process the server response before it is written
+                            to the model.
+                            See below for more details.
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td><b>bindings</b></td>
+                <td>A map of data types keyed by a path reference.
+                    Paths will be interpreted as relative to the remote object's 'data' property.
+                    Wildcards are accepted. (Optional).</td>
+            </tr>
+        </table>
+        <h3>path</h3>
+        <p>
+            If the remote() method is invoked with a single string argument then it is interpreted as the
+            remote object's model reference path, i.e. the call <code>$.nub.remote('accounts')</code> is
+            equivalent to <code>$.nub.remote( { 'path':'accounts' } )</code>.
+        </p>
+        <h2>The remote object</h2>
+        <p>
+            When the remote type is bound to a location in the model it creates a <i>remote object</i>.
+            This object is used to manage loading data into the model, and has the following properties:
+        </p>
+        <table class="api">
+            <tr>
+                <td><b>meta</b></td>
+                <td>This property contains meta-data about the remote object.
+                    This includes the following properties:
+                    <ul>
+                        <li><b>status</b>: The status of the loaded data. This includes:
+                            <ul>
+                                <li><b>preload</b> - no data is loaded yet,</li>
+                                <li><b>loading</b> / <b>submitting</b> - a request has been made for data,</li>
+                                <li><b>loaded</b> - data has been loaded.</li>
+                            </ul>
+                        </li>
+                        <li><b>error</b>: If an error occurred during the last load then this will contain
+                            a message describing the cause.</li>
+                        <li><b>uri</b>: The URI the data was loaded from.</li>
+                        <li><b>timestamp</b>: The time the data was loaded at.</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td><b>data</b></td>
+                <td>Any data loaded from the server is placed under this property.</td>
+            </tr>
+            <tr>
+                <td><b>serialize()</b></td>
+                <td>A method to serialize the 'data' property before performing a PUT or POST request.
+                    (The function is invoked as a method of the remote object so it is available using
+                    the 'this' keyword, i.e. <code>this.data</code> will return the remote object's
+                    data property).
+                    The default method performs JSON serialization of the 'data' property.</td>
+            </tr>
+        </table>
+        <p>
+            The remote object also has the following methods:
+        </p>
+        <h3>onsubmit( <i>request</i> )</h3>
+        <p>
+            A method allowing a request to be modified before it is made.
+            The method is passed an object with the following properties and should return a modified
+            form of the object to be used to make the next request:
+            <ul>
+                <li><b>url</b>: The URL data is being requested from.</li>
+                <li><b>type</b>: The HTTP method, GET, PUT or POST.</li>
+            </ul>
+        </p>
+        <p>
+            (Other properties are present, see the code for more details).
+        </p>
+        <p>
+            The function is invoked as a method on the remote object so the '<code>this</code>' keyword will
+            resolve to the remote object.
+        </p>
+        <p>
+            The default method returns the request object unchanged.
+        </p>
+        <h3>onload( <i>remote</i>, <i>method</i> )</h3>
+        <p>
+            A method allowing the remote data to be modified before it is written to the model.
+            The method takes two arguments, the first is the remote object updated with the server
+            response, the second is a string with the name of the HTTP method used for the request.
+            The method should be used to generate an alternative 'data' property representation before
+            the model is updated.
+        </p>
+        <p>
+            The function is invoked as a method on the remote object so the 'this' keyword will
+            resolve to the remote object.
+        </p>
+        <p>
+            The default implementation returns the new remote object unchanged.
+        </p>
+        <h3>get( <i>uri</i> )</h3>
+        <p>
+            This method performs a HTTP GET request on the specified URI.
+        </p>
+        <h3>put( <i>uri</i> )</h3>
+        <p>
+            This method performs a HTTP PUT request on the specified URI.
+        </p>
+        <h3>post( <i>uri</i> )</h3>
+        <p>
+            This method performs a HTTP POST request on the specified URI.
+        </p>
+        <h3>reload()</h3>
+        <p>
+            Reload the current data.
+        </p>
+        <h3>reset()</h3>
+        <p>
+            Reset the data to its initial load state.
+        </p>
+        <h3>whenAvailable( <i>callback</i>, <i>repeat</i> )</h3>
+        <p>
+            Invoke a callback function once the remote data has been loaded.
+            The callback function will be called immediately if the data is already loaded.
+            The callback is passed the remote object as its only argument.
+            If 'repeat' is true then the callback will be invoked each time data is loaded by the
+            remote object, otherwise the callback is removed after its first use.
+        </p>
+    </body>
+</html>

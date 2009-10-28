@@ -1,0 +1,50 @@
+<html>
+    <body>
+        <p>
+            While it is possible to create custom data types from scratch, it requires familiarity with
+            the plugin's core code.
+            The <b>DataMVCType</b> is provided as an convenient alternative.
+        </p>
+        <h2>$.nub.DataMVCType( <i>options</i> )</h2>
+        <p>
+            This is a constructor function which should be passed an 'options' object with at least one
+            <b>make</b>, <b>format</b> or <b>parse</b> property.
+            Each property is a function to initialize, format or parse a data value, and are used to
+            customize the type's behaviour.
+            (A DataMVCType initialized with none of these options supplied and then bound to the model
+            will simply act as though no type has been bound).
+        </p>
+        <p>
+            The functions are described below, but note that some arguments are common to all of them.
+            These are:
+            <ul>
+                <li><b>opts</b>: This is a set of format options which are in-scope when the
+                type is invoked.</li>
+                <li><b>path</b>: This is a path reference relative to the object which the type is bound to.
+                    This is only required when the custom data type allows sub-properties of the value,
+                    e.g. a 'datetime' type might have 'date' and 'time' sub-properties.
+                    When the type is parsing or formatting values, it can choose to handle only the date or
+                    time portion of the value if the 'path' argument is present and contains 'date' or 'time'.
+                </li>
+            </ul>
+        </p>
+        <h3>make( value, opts, path )</h3>
+        <p>
+            Make a new, appropriate value to insert into the model.
+            This will be invoked if, for example, an <code>$.nub.set(..)</code> call is made on a model
+            location bound to the custom type which hasn't yet had any data written to it.
+        </p>
+        <h3>format( value, opts, path )</h3>
+        <p>
+            Format the specified value, possibly using the specified format options.
+            Should return an appropriately formatted version of 'value', normally as a string,
+            and normally would be an object that the 'parse' method can correctly handle.
+        </p>
+        <h3>parse( newValue, oldValue, opts, path )</h3>
+        <p>
+            Parse 'newValue' and return an object suitable to be stored in the model.
+            The 'oldValue' argument is the object currently stored in the model.
+            The value returned should be an object which the 'format' method can correctly handle.
+        </p>
+    </body>
+</html>

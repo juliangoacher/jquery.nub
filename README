@@ -1,0 +1,14 @@
+This directory contains the jquery.nub plugin.
+
+Contents:
+
+    README              This file.
+    GPL-LICENSE.txt     GNU General Public License text.
+    MIT-LICENSE.txt     MIT License text.
+    docs                Documentation files and scripts.
+    src                 Source JavaScript files.
+    lib                 Additional required JavaScript files.
+    build               Scripts for generating the contents of the 'dist' directory.
+    dist                The distribution files.
+
+                        Julian Goacher 2009-10-28

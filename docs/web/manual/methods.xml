@@ -1,0 +1,141 @@
+<html>
+    <body>
+        <h2>$.nub.get( <i>ref</i>, <i>context</i>, <i>opts</i> )</h2>
+        <p>
+            Read a data value from the model.
+        </p>
+        <table class="api">
+            <tr>
+                <td><b>ref</b></td>
+                <td>The reference path of the data item to read. (Required).</td>
+            </tr>
+            <tr>
+                <td><b>context</b></td>
+                <td>A context for the reference path. Only required if the reference path is relative.</td>
+            </tr>
+            <tr>
+                <td><b>opts</b></td>
+                <td>Format options to use when formatting the value.
+                    (Only used if the requested data item has an associated formatting type).
+                </td>
+            </tr>
+        </table>
+        <h2>$.nub.set( <i>ref</i>, <i>value</i>, <i>context</i>, <i>opts</i> )</h2>
+        <p>
+            Write a data value to the model.
+            Any views on the data item will be updated after the write.
+        </p>
+        <table class="api">
+            <tr>
+                <td><b>ref</b></td>
+                <td>The reference path of the data item to write. (Required).</td>
+            </tr>
+            <tr>
+                <td><b>value</b></td>
+                <td>The data value. (Required).</td>
+            </tr>
+            <tr>
+                <td><b>context</b></td>
+                <td>A context for the reference path. Only required if the reference path is relative.</td>
+            </tr>
+            <tr>
+                <td><b>opts</b></td>
+                <td>Format options to use when formatting the value.
+                    (Only used if the requested data item has an associated formatting type).
+                </td>
+            </tr>
+        </table>
+        <h2>$.nub.del( <i>ref</i>, <i>value</i>, <i>context</i>, <i>opts</i> )</h2>
+        <p>
+            Delete a value from the model.
+            Any views on the data item will be updated after the delete.
+        </p>
+        <table class="api">
+            <tr>
+                <td><b>ref</b></td>
+                <td>The reference path of the data item to delete. (Required).</td>
+            </tr>
+            <tr>
+                <td><b>value</b></td>
+                <td>The data value to delete. (Optional).</td>
+            </tr>
+            <tr>
+                <td><b>context</b></td>
+                <td>A context for the reference path. Only required if the reference path is relative.</td>
+            </tr>
+        </table>
+        <h2>$.nub.view( <i>ref</i>, <i>view</i>, <i>context</i>, <i>opt</i> )</h2>
+        <p>
+            Register a view with the MVC.
+        </p>
+        <table class="api">
+            <tr>
+                <td><b>ref</b></td>
+                <td>The reference path of the data item being viewed. (Required).</td>
+            </tr>
+            <tr>
+                <td><b>view</b></td>
+                <td>The view object.
+                    Can be an HTML node or a function. (Required).
+                </td>
+            </tr>
+            <tr>
+                <td><b>context</b></td>
+                <td>A context for the reference path. Only required if the reference path is relative.</td>
+            </tr>
+            <tr>
+                <td><b>opts</b></td>
+                <td>Format options to associate with the view.</td>
+            </tr>
+        </table>
+        <h2>$.nub.removeView( <i>ref</i>, <i>view</i>, <i>context</i> )</h2>
+        <p>
+            De-register a view.
+        </p>
+        <table class="api">
+            <tr>
+                <td><b>ref</b></td>
+                <td>The reference path of the data item being viewed. (Required).</td>
+            </tr>
+            <tr>
+                <td><b>view</b></td>
+                <td>The view object to deregisted.
+                    Can be an HTML node or a function. (Required).
+                </td>
+            </tr>
+            <tr>
+                <td><b>context</b></td>
+                <td>A context for the reference path. Only required if the reference path is relative.</td>
+            </tr>
+        </table>
+        <h2>$.nub.type( <i>ref</i>, <i>type</i>, <i>context</i> )</h2>
+        <p>
+            Bind a type to a location in the model.
+        </p>
+        <table class="api">
+            <tr>
+                <td><b>ref</b></td>
+                <td>The reference path of the data item the type is bound to.
+                    Type bindings can include wildcards, i.e. the method call
+                    <code>$.nub.type('/data/*', someType )</code> will apply 'someType' to
+                    all child properties of the 'data' object.
+                    Note that includes all properties not created yet - any child property created after
+                    the type is applied will have the type 'someType'.
+                    <p/>
+                    Non-wildcard bindings take precedence over wildcard bindings, so applying the type
+                    <code>$.nub.type('/data/date', dateType)</code> will have the expected
+                    effect.
+                    <p/>
+                    (Required).</td>
+            </tr>
+            <tr>
+                <td><b>type</b></td>
+                <td>The type instance. (Required).</td>
+            </tr>
+            <tr>
+                <td><b>context</b></td>
+                <td>A context for the reference path. Only required if the reference path is relative.</td>
+            </tr>
+        </table>
+    </body>
+</html>

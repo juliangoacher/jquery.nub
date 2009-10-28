@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<html>
+    <head>
+        <script>
+            $(document).ready(function() {
+                $(':input').nub('/data');
+                $('[data]').nub('/data');
+                function calcTotal() {
+                    var list = $.nub.get('/data/list');
+                    var total = 0;
+                    for( var i = 0; i &lt; list.length; i++ ) {
+                        total += Number( list[i] );
+                    }
+                    $.nub.set('/data/list/total', total );
+                }
+                $.nub.view('/data/list', calcTotal );
+                $.nub.set('/data/list', [ 1, 2, 3, 5, 8 ] );
+            });
+        </script>
+    </head>
+    <body>
+        <p>
+            A function can be registered directly with the MVC as a view on a model data item.
+            This can be useful for calculating values as data in the model is updated.
+        </p>
+        <p>
+            In this example, a functional view is used to generate the total sum of an list of values.
+            Watch the total at the bottom of the list update as you enter values into the text fields:
+        </p>
+        <p><input name="list/0" size="5"/></p>
+        <p><input name="list/1" size="5"/></p>
+        <p><input name="list/2" size="5"/></p>
+        <p><input name="list/3" size="5"/></p>
+        <p><input name="list/4" size="5"/></p>
+        <p>Total: <b data="list/total"/></p>
+        <p>
+            Implementing this functionality is straightforward.
+            First, display the array's items using a number of text inputs:
+        </p>
+        <pre class="brush: xml">
+            <p>
+                <input name="list/0" size="5"/>
+            </p>
+            <p>
+                <input name="list/1" size="5"/>
+            </p>
+            <p>
+                <input name="list/2" size="5"/>
+            </p>
+            <p>
+                <input name="list/3" size="5"/>
+            </p>
+            <p>
+                <input name="list/4" size="5"/>
+            </p>
+            <p>
+                Total: <b data="list/total"/>
+            </p>
+        </pre>
+        <p>
+            Note the last paragraph which is used to display the list total.
+            Register the inputs and the total view using the standard method:
+        </p>
+        <pre class="brush: js">
+            $(':input').mvc('/data');
+            $('[data]').mvc('/data');
+        </pre>
+        <p>
+            The total is calculated using a simple function which reads the array from the model
+            and calculates the sum of its items:
+        </p>
+        <pre class="brush: js">
+            function calcTotal() {
+                var list = $.mvc.get('/data/list');
+                var total = 0;
+                for( var i = 0; i &lt; list.length; i++ ) {
+                    total += Number( list[i] );
+                }
+                $.mvc.set('/data/list/total', total );
+            }
+            $.mvc.view('/data/list', calcTotal );
+        </pre>
+        <p>
+            The function is then registered with the MVC as a view using the <b>$.mvc.view()</b> method.
+            This will cause the function to be invoked whenever any property of the list is updated.
+        </p>
+        <p>
+            (Note also in the code above that we coerce each list item to a number.
+            This is because the values entered into the form inputs will be read and stored in the model
+            as strings.
+            See the <a href="examples-data-types.html">data type examples</a> page to find out how to
+            get the MVC to perform these types of conversions automatically).
+        </p>
+        <p>
+            Finally, we initialize the list data by passing it an array:
+        </p>
+        <pre class="brush: js">
+            $.mvc.set('/data/list', [ 1, 2, 3, 5, 8 ] );
+        </pre>
+    </body>
+</html>

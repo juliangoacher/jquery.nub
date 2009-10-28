@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html [
+<!ENTITY ubreve "&#365;">
+<!ENTITY Nub "N&ubreve;b">
+]>
+<html>
+    <head>
+    </head>
+    <body>
+        <p>&Nub; is a jQuery plugin providing MVC functionality to a web page.</p>
+        <h2>What is an MVC?</h2>
+        <p>
+            'MVC' stands for 'Model-View-Controller' and is the name of a software pattern used to manage the
+            presentation and input of data in a user interface.
+            The pattern's constituent parts are:
+            <ul>
+                <li>
+                    <b>The model</b>, which contains the application data,
+                </li>
+                <li>
+                    <b>views</b>, which are used to display model data, and
+                </li>
+                <li>
+                    <b>the controller</b>, which coordinates behaviour so that views are updated whenever the
+                    model data is changed.
+                </li>
+            </ul>
+        </p>
+        <h2>The model</h2>
+        <p>
+            All data used by the &Nub; plugin is stored in a single model.
+            This model can be accessed directly using the JavaScript expression <code>$.nub.model</code>,
+            but more usefully the model should be accessed using the plugin's built-in methods.
+            Use of these methods will ensure that views receive notification of model updates
+            and that data values are formatted appropriately.
+        </p>
+        <p>
+            Model data can be read using the <code>$.nub.get()</code> method.
+            The method requires a single argument, a <i>model path</i> which references the required data.
+            All model data is referenced in the MVC using a path.
+            A path is composed of object property names separated by forward slashes, e.g.
+            <code>/data/object/property</code>.
+            Note that the reference path corresponds to the standard dot notation used to reference
+            JavaScript properties, i.e <code>/data/object/property</code> references the same property as
+            <code>$.nub.model.data.object.property</code>.
+        </p>
+        <p>
+            The path reference works the same way when accessing items in an array, so for example the first
+            item of an array located at <code>/data/list</code> can be accessed using
+            <code>$.nub.get('/data/list/0')</code>, and the
+            length of the array returned using the array's <i>length</i> property, i.e.
+            <code>$.nub.get('/data/list/length')</code>.
+        </p>
+        <p>
+            Model data can be updated using the <code>$.nub.set()</code> method.
+            The method requires two arguments, the <b>reference path</b> of the data item to be updated,
+            and the value to update it with.
+        </p>
+        <pre class="brush: js">
+            $.nub.set('/data/list/2','Stripes');
+        </pre>
+        <p>
+            Using the $.nub.set() method ensures that any views on the data registered with the MVC are
+            notified after the update, thus allowing them to refresh and display the new data.
+        </p>
+        <h2>Views</h2>
+        <p>
+            Views are used to display the model data and in the jquery.nub plugin are also used to gather
+            user input.
+            The simplest type of view is a single HTML element whose text content is used to display the
+            value of the data item being viewed.
+            The element's <b>data</b> attribute is used to store the reference path of the data item the
+            element is viewing, for example:
+        </p>
+        <pre class="brush: xml">
+            &lt;span data="/data/list/2"&gt;
+        </pre>
+        <p>
+            The view element is registered with the MVC using the jQuery.nub() function with an appropriate
+            jQuery selector, i.e.:
+        </p>
+        <pre class="brush: js">
+            $('[data]').nub();
+        </pre>
+        <p>
+            (This will select all elements with a 'data' attribute and register them with the MVC as views).
+        </p>
+        <p>
+            Input elements use their <b>name</b> attribute to specify their associated data:
+        </p>
+        <pre class="brush: xml">
+            &lt;input name="/data/list/2" size="10"&gt;
+        </pre>
+        <p>
+            When registered with the MVC (e.g. using <code>$(':input').nub()</code>), the input will not
+            only display the value stored in the indicated part of the model but can also be used to
+            update that value.
+        </p>
+        <p>
+            Functions can be registered directly with the MVC as views using the <code>$.nub.view()</code>
+            method.
+            Views of this kind allow purely functional views, as well as more complex view types, to be
+            implemented.
+            (See <a href="examples-functional-views.html">here</a> for some examples).
+        </p>
+        <h2>Context paths</h2>
+        <p>
+            It is often the case when describing many views that all the views will share some common base
+            path in their reference paths.
+            For example, it is a &Nub; convention that all user data is placed under <code>/data</code>, so
+            all views shown in the examples above have a reference path beginning with <code>/data</code>.
+            &Nub; provides a convenient shortcut for dealing with this situation.
+            When registering a view, a <b>context path</b> can be passed to the nub() function.
+            All <i>relative</i> path references will then be interpreted relative to the context path.
+            So, the examples above could be rewritten as:
+        </p>
+        <pre class="brush: xml">
+            &lt;span data="list/2"&gt;
+        </pre>
+        <pre class="brush: js">
+            $('[data]').nub('/data');
+        </pre>
+        <p>
+            This can be especially useful when a large number of views are required on the different properties
+            of a single object in the model.
+        </p>
+        <h2>Types</h2>
+        <p>
+            Type information can be associated with data in the model,
+            and allows the MVC to format data in an appropriate manner when it is requested from the model.
+            The MVC also uses type information to parse input data when updating the model.
+            The parse and format behaviour of a type can be modified by using <b>format options</b>.
+            Format options are specific to the type (e.g. a 'date' type could have options for formatting
+            the date as a short format - 23/09/09 - or long format - 23rd September 2009),
+            and allow different views to present alternative forms of the same value.
+            A standard format option - <b>bare</b> will return the model value unformatted.
+            See <a href="examples-data-types.html">the examples</a> for more information.
+        </p>
+        <h2>Remote data</h2>
+        <p>
+            The MVC plugin provides a mechanism for loading remote data from a server using AJAX and into
+            the model where it can be displayed and edited.
+            The same mechanism allows the data to be PUT or POSTed back to the server once edited.
+            See <a href="examples-remote-data.html">the examples</a> or read the API documentation for more
+            detail.
+        </p>
+        <h2>nub.frames</h2>
+        <p>
+            <b>&Nub;</b> has an optional module, called nub.frames, which can be used to describe multi-
+            screen UIs within a single HTML page.
+            An <i>nub.frame</i> is simply a HTML element which is registered as a view with the MVC and
+            whose visible content is controlled by some value in the model.
+            The simplest kind of nub.frame is an element which displays the contents of a URI stored in the
+            model.
+            See <a href="examples-simple-navigation.html">the examples</a> for more information.
+        </p>
+    </body>
+</html>
