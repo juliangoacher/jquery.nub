@@ -105,36 +105,71 @@
     </page>
     <page id="overview" title="Overview" href="overview.xml"/>
     <page id="download" title="Download Plugin">
-        <p>
-            The latest version can be downloaded from here:
-            <ul>
-                <li>jQuery.nub core: <a href="">jquery.nub.js</a></li>
-                <li>jQuery.nub frames: <a href="">jquery.nub-frames.js</a></li>
-            </ul>
-        </p>
-        <p>
-            The complete distribution, including minified versions of the plugin files can be
-            downloaded from here:
-            <ul>
-                <li><a href="">jquery.nub.zip</a></li>
-                <li><a href="">jquery.nub.tgz</a></li>
-            </ul>
-        </p>
-        <p>
-            The full source code repository is available <a href="">on GitHub</a>.
-        </p>
-        <h2>Dependencies</h2>
-        <p>
-            json2.js
-        </p>
-        <h2>Contact</h2>
-        <p>
+        <head>
             <script>
-                var y=''+((22/7)*(Math.pow(10,7)));
-                var a=['.','@','jquery','nub','.','pi','com','innerfunction'];
-                for( var i=0;i&lt;7;i++)document.write(a[Number(y[i])-1]);
+                $(document).ready(function() {
+                    var y=''+((22/7)*(Math.pow(10,7)));
+                    var a=['.','@','jquery','nub','.','pi','com','innerfunction'];
+                    var em='';
+                    for( var i=0;i&lt;7;i++)em+=(a[Number(y[i])-1]);
+                    $('#el').attr('href','mai'+'lto:'+em).text(em);
+                });
             </script>
-        </p>
+        </head>
+        <body>
+            <p>
+                The latest version can be downloaded from here:
+                
+                <ul>
+                    <li>jQuery.nub core:
+                        <a href="http://cloud.github.com/downloads/juliangoacher/jquery.nub/jquery.nub.js">
+                            jquery.nub.js
+                        </a>
+                        &nbsp;
+                        <a href="http://cloud.github.com/downloads/juliangoacher/jquery.nub/jquery.nub.min.js">
+                            jquery.nub.min.js
+                        </a>
+                    </li>
+                    <li>jQuery.nub frames:
+                        <a href="http://cloud.github.com/downloads/juliangoacher/jquery.nub/jquery.nub-frames.js">
+                            jquery.nub-frames.js
+                        </a>
+                        &nbsp;
+                        <a href="http://cloud.github.com/downloads/juliangoacher/jquery.nub/jquery.nub-frames.min.js">
+                            jquery.nub-frames.min.js
+                        </a>
+                    </li>
+                </ul>
+            </p>
+            <p>
+                The complete distribution, including minified versions of the plugin files can be
+                downloaded from here:
+                <ul>
+                    <li>
+                        <a href="http://cloud.github.com/downloads/juliangoacher/jquery.nub/jquery.nub.0.8.zip">
+                            jquery.nub.0.8.zip
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://cloud.github.com/downloads/juliangoacher/jquery.nub/jquery.nub.0.8.tgz">
+                            jquery.nub.0.8.tgz
+                        </a>
+                    </li>
+                </ul>
+            </p>
+            <p>
+                The full source code repository is available
+                <a target="github" href="http://github.com/juliangoacher/jquery.nub">on GitHub</a>.
+            </p>
+            <h2>Dependencies</h2>
+            <p>
+                json2.js
+            </p>
+            <h2>Contact</h2>
+            <p>
+                <a id="el" href=""></a>
+            </p>
+        </body>
     </page>
     <section id="examples" title="Examples">
         <page id="select-list" title="Select lists" href="examples/select-list.xml"/>
