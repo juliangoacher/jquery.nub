@@ -63,4 +63,25 @@
         ok( result[0] && result[1] && result[2], "All views invoked after update");
     });
 
+    test('nub() function, registering view elements', function() {
+        expect( 2 );
+        var value = 'This and That';
+        $.nub.set('/data/test', value );
+        $('.view-test-1').nub();
+        equals( $('#view1').text(), value, "View element displays the correct value");
+        equals( $('#input1').val(), value, "Input element displays the correct value");
+    });
+
+    test('nub() function, registering select lists', function() {
+        expect( 3 );
+        $('.view-test-2').nub();
+        $.nub.set('/data/list', [ ['1','One'],['2','Two'],['3','Three'] ]);
+        $.nub.set('/data/test', '2');
+        var select = $('#select1').get(0);
+        equals( $(select.options[0]).text(), 'Default', "Select element has default option");
+        equals( select.options.length, 4, "Select has all options");
+        var idx = select.selectedIndex;
+        equals( $(select.options[idx]).val(), '2', "Selected value is correct");
+    });
+
 })(jQuery);
