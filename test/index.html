@@ -1,28 +1,42 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
-<head>
-<link rel="stylesheet" href="testsuite.css" />
-<script type="text/javascript" src="../lib/jquery.js"></script>
-<script type="text/javascript" src="testrunner.js"></script>
-<script type="text/javascript" src="../src/jquery.nub.js"></script>
-<script type="text/javascript" src="core.js"></script>
-<!-- TODO: remote.js, frames.js, types.js -->
-</head>
+    <head>
+        <link rel="stylesheet" href="qunit.css" />
+        <script type="text/javascript" src="../lib/jquery.js"></script>
+        <script type="text/javascript" src="../lib/json2.js"></script>
+        <script type="text/javascript" src="qunit.js"></script>
+        <script type="text/javascript" src="../src/jquery.nub.js"></script>
+        <script type="text/javascript" src="../src/jquery.nub-frames.js"></script>
+        <script type="text/javascript" src="core.js"></script>
+        <script type="text/javascript" src="remote.js"></script>
+        <script type="text/javascript" src="frame.js"></script>
+    </head>
+    <body>
 
-<body>
-<h1>jQuery - Nub Test Suite</h1>
-<div id="main" style="display: none">
+        <!-- Position frame outside of viewport (note that we can't just hide the frame;
+             the nub.frame tests rely on visibility tests which would fail otherwise). -->
+        <div id="main" style="position:absolute;left:-10000px;top:-10000px;">
 
-    <div id="view1" class="view-test-1" data="/data/test"></div>
+            <div id="view1" class="view-test-1" data="/data/test"></div>
 
-    <input id="input1" class="view-test-1" name="/data/test"/>
+            <input id="input1" class="view-test-1" name="/data/test"/>
 
-    <select id="select1" class="view-test-2" name="/data/test" data="/data/list">
-        <option value="">Default</option>
-    </select>
+            <select id="select1" class="view-test-2" name="/data/test" data="/data/list">
+                <option value="">Default</option>
+            </select>
 
-</div>
+            <div id="switched-frame">
+                <div id="sw1">SW1</div>
+                <div id="sw2">SW2</div>
+                <div id="$default">$default</div>
+            </div>
 
-<ol id="tests"></ol>
-</body>
+        </div>
+
+        <h1 id="qunit-header">jquery.nub test suite</h1>
+        <h2 id="qunit-banner"></h2>
+        <h2 id="qunit-userAgent"></h2>
+        <ol id="qunit-tests"></ol>
+
+    </body>
 </html>

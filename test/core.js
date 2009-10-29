@@ -63,6 +63,27 @@
         ok( result[0] && result[1] && result[2], "All views invoked after update");
     });
 
+    test('Circular view dependencies', function() {
+        expect( 1 );
+        var loop = false, pass = true;
+        function view1() {
+            if( loop ) {
+                ok( false, "Recursive view notification not prevented");
+                pass = false;
+            }
+            else {
+                loop = true;
+                $.nub.set('/data/loop-test', 100 );
+                loop = false;
+            }
+        };
+        // Use the 'noinit' form of view registration to simplify the test.
+        $.nub.addViewNoInit('/data/loop-test', view1 );
+        $.nub.set('/data/loop-test', 0 );
+        $.nub.removeView('/data/loop-test', view1 );
+        if( pass ) ok( true, "Recursive view notification prevented");
+    });
+
     test('nub() function, registering view elements', function() {
         expect( 2 );
         var value = 'This and That';
