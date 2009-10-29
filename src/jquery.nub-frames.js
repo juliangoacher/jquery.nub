@@ -175,8 +175,10 @@
         }
     } );
     function SwitchedHTMLFrame( options ) {
-        //this.cid = options.cid||$.nub.model.options.contentIDAttr;
-        this.cid = cid||$.nub.model.options.contentIDAttr;
+        this.cid = $.nub.model.options.contentIDAttr;
+        if( options !== undefined && options.cid !== undefined ) {
+            this.cid = options.cid;
+        }
     };
     $.nub.frames.SwitchedHTMLFrame = SwitchedHTMLFrame;
 
