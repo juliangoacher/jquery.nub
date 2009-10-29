@@ -3,7 +3,8 @@
 <!ENTITY nbsp "&#x000A0;">
 <!ENTITY copy "&#x00A9;">
 ]>
-<xsl:transform xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:transform xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
+               xmlns:date="http://exslt.org/dates-and-times" extension-element-prefixes="date">
 
 <xsl:output method="html" encoding="iso-8859-1" indent="yes"/>
 
@@ -121,6 +122,9 @@
             <xsl:apply-templates select="node()"/>
         </xsl:otherwise>
     </xsl:choose>
+    <div style="float: right; font-size: 85%;">
+        <i>Generated <xsl:value-of select="date:date-time()"/></i>
+    </div>
 </xsl:template>
 
 <!-- Generate a site section -->
