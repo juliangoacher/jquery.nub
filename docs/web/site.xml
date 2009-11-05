@@ -3,7 +3,7 @@
 <!ENTITY nbsp "&#x000A0;">
 <!ENTITY copy "&#x00A9;">
 <!ENTITY ubreve "&#365;">
-<!ENTITY Nub "N&ubreve;b">
+<!ENTITY Nub "Nub">
 ]>
 <site id="jquery.mvc" title="jquery.n&ubreve;b" icon="favicon.ico">
     <head>
@@ -207,5 +207,20 @@
                title="InnerFunction Ltd." alt="InnerFunction Ltd."/>
         </a>
         <i><entity name="copy"/> InnerFunction 2009.</i>
+        <!-- google analytics -->
+        <script type="text/javascript">
+            <![CDATA[
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+            ]]>
+        </script>
+        <script type="text/javascript">
+            <![CDATA[
+            try {
+            var pageTracker = _gat._getTracker("UA-11455283-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+            ]]>
+        </script>
     </footer>
 </site>
