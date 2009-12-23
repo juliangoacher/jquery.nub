@@ -218,4 +218,73 @@
             }, options.context );
         });
     };
+
+    // TODO: Make changes to Frames.
+    // * Frames : Something that load html
+    //  - Display HTML in the model.  (name: HTMLFrame)
+    //  - Load html + setup from uri : (name: DynamicFrame)
+    //  - Load html from uri. (Same than DynamicFrame...just omit the setup.js file)
+    // * nubStack : Select part of html to be showed. Replacement for SwitchedHTMLFrame
+
+    /**
+     * Apply a menu list to an element: Allows navigation clicking on element in
+     * the list and showing the result in a frame element. Options are:
+     * - frame:    The frame configuration (optional)
+     *      - keyRef : The content key reference (optional : default '/data/' + elementID  )
+     *      - makeLayoutURI : Function to generate a URI for the layout from the content key. (optional : default to key + .html)
+     *      - makeSetupURI : Function to generate a UEI for the setup file (js) from the content key.
+     * - frameLookup : Funcion to return an object with the correspondent frame element.  (optional)
+     *     (default to elementID+'-frame' e.g. elementID is 'main' the frame elemement id has to be 'main-frame')
+     */
+    $.fn.nubDynamicMenu = function( options ) {
+        var elementID = this.attr('id');
+        var contentKeyRef = '/data/' + elementID;
+        var frameLookup = function(menuItem){
+          return $('#' + menuItem.attr('id') + '-frame');
+        }
+        // Default values
+        var makeLayoutURI = function(key){
+                return key + '/main.html'
+        };
+        var makeSetupURI = function(key){
+                return this.makeLayoutURI(key) + '.setup.js';
+        };
+        var frameOptions = {
+                'contentKeyRef' : '/data/contentKeyRef',
+                'makeLayoutURI' : function( key ){
+                    return key + '/main.html';
+                }
+        };
+        if (options && options.frame) {
+            frameOptions  = options.frame;
+        };
+        if (options && $.isFunction( options.frameLookup)) {
+            frameLookup = options.frameLookup;
+        };
+        if (options && $.isFunction( options.frame.makeLayoutURI)) {
+            makeLayoutURI = options.frame.makeLayoutURI;
+        }
+        if (options && $.isFunction( options.frame.makeSetupURI)){
+            makeSetupURI = options.frame.makeSetupURI;
+        }
+        if (options && options.frame.contentKeyRef) contentKeyRef = options.frame.contentKeyRef;
+
+        frameOptions = {
+            'frame' : new $.nub.frames.DynamicFrame({
+                'makeLayoutURI' : makeLayoutURI,
+                'makeSetupURI'  : makeSetupURI
+             }),
+            'keyRef' : contentKeyRef
+        };
+
+        $(this).find('li').each(function(){
+            var id = this.id;
+            $(this).click(function(){
+                console.log('click on ' + id);
+                $.nub.set(contentKeyRef, id);
+            });
+        });
+
+        return frameLookup($(this)).nubFrame(frameOptions);
+    };
 })(jQuery);
