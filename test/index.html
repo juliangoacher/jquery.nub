@@ -10,8 +10,17 @@
         <script type="text/javascript" src="core.js"></script>
         <script type="text/javascript" src="remote.js"></script>
         <script type="text/javascript" src="frame.js"></script>
+        <script type="text/javascript" src="menu.js"></script>
     </head>
     <body>
+
+        <div id="menu" style="position:absolute;left:-10000px;top:-10000px;">
+            <div id="dynamic-menu-frame" >Frame:</div>
+            <ul id="dynamic-menu" >
+                <li id="section1">Section1</li>
+                <li id="section2">Section2</li>
+            </ul>
+        </div>
 
         <!-- Position frame outside of viewport (note that we can't just hide the frame;
              the nub.frame tests rely on visibility tests which would fail otherwise). -->
@@ -30,7 +39,7 @@
                 <div id="sw2">SW2</div>
                 <div id="$default">$default</div>
             </div>
-
+            
         </div>
 
         <h1 id="qunit-header">jquery.nub test suite</h1>
