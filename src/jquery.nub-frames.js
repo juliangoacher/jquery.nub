@@ -228,7 +228,7 @@
 
     /**
      * Apply a menu list to an element: Allows navigation clicking on element in
-     * the list and showing the result in a frame element. Options are:
+     * the list showing the content in a frame element. Options are:
      * - frame:    The frame configuration (optional)
      *      - keyRef : The content key reference (optional : default '/data/' + elementID  )
      *      - makeLayoutURI : Function to generate a URI for the layout from the content key. (optional : default to key + .html)
