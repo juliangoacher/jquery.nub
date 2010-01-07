@@ -226,12 +226,19 @@
     //  - Load html from uri. (Same than DynamicFrame...just omit the setup.js file)
     // * nubStack : Select part of html to be showed. Replacement for SwitchedHTMLFrame
 
+    // Suggestions: To make the use of Dynamic menu more intuitive...
+    // - If the file in MakeSetupURI doesn't exist don't throw any error.
+    // - Run setup even in scenarios where there is not a layout file. (ex. logout)
+
     /**
-     * Apply a menu list to an element: Allows navigation clicking on element in
-     * the list showing the content in a frame element. Options are:
+     * Apply a menu behaviour to a list element to allow menu navigation in a web page. Performs dynamic load
+     * of content in a frame based on user's menu selection.
+     *
+     * Options are:
      * - frame:    The frame configuration (optional)
      *      - keyRef : The content key reference (optional : default '/data/' + elementID  )
-     *      - makeLayoutURI : Function to generate a URI for the layout from the content key. (optional : default to key + .html)
+     *      - makeLayoutURI : Function to generate a URI for the layout from the content key.
+     *          (optional : default to key + .html)
      *      - makeSetupURI : Function to generate a UEI for the setup file (js) from the content key.
      * - frameLookup : Funcion to return an object with the correspondent frame element.  (optional)
      *     (default to elementID+'-frame' e.g. elementID is 'main' the frame elemement id has to be 'main-frame')
@@ -244,17 +251,12 @@
         }
         // Default values
         var makeLayoutURI = function(key){
-                return key + '/main.html'
+                return key + '.html'
         };
         var makeSetupURI = function(key){
                 return this.makeLayoutURI(key) + '.setup.js';
         };
-        var frameOptions = {
-                'contentKeyRef' : '/data/contentKeyRef',
-                'makeLayoutURI' : function( key ){
-                    return key + '/main.html';
-                }
-        };
+
         if (options && options.frame) {
             frameOptions  = options.frame;
         };
@@ -269,9 +271,9 @@
         }
         if (options && options.frame.contentKeyRef) contentKeyRef = options.frame.contentKeyRef;
 
-        frameOptions = {
+        var frameOptions = {
             'frame' : new $.nub.frames.DynamicFrame({
-                'makeLayoutURI' : makeLayoutURI,
+                'makeLayoutURI' :  makeLayoutURI,
                 'makeSetupURI'  : makeSetupURI
              }),
             'keyRef' : contentKeyRef
