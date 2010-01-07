@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<html>
+    <head>
+        <script src="jquery.nub-frames.js"/>
+        <script>
+             $(document).ready(function() {
+                $('#simple-dynamic-menu').nubDynamicMenu();
+
+                 $('#pkgs-dynamic-menu').nubDynamicMenu({
+                    'frame' : {
+                        'contentKeyRef' : '/data/contentKeyRef',
+                        'makeLayoutURI' : function(key){
+                            var path =  key + '/main.html';
+                            console.log('layout : %s',path);
+                            return path;
+                        },
+                        'makeSetupURI' : function(key){
+                            var path = key + '/setup.js';
+                            console.log("setup : %s", path);
+                        }
+                    }
+                });
+             });
+        </script>
+
+    </head>
+<body>
+
+    <h2>DynamicMenu</h2>
+    <p>
+        A <b>DynamicMenu</b> is a powerfull menu type that can be attached to a list element to allow menu 
+        navigation between sections in a web page. DynamicMenu performs dynamic load of frame content based
+        on menu selection. A DynamicMenu make uses of nub DynamicMenu and on the same way it will load two
+        files when a section is selected, The first is the <i>layout file</i> which describes the HTML content
+        to be displayed into the frame. The second file is the <i>setip file</i> that contains JavaScript to
+        be executed on the layout.
+     </p>
+    <p>
+        A DynamicMenu is initialized with the following options:
+        <ul>
+            <li>
+                <b>Frame</b>: The optional frame configuration. Default values will be used if not frame
+                configuration is provided. 
+                <p>
+                <ul>
+                    <li><b>keyRef</b>: The content key reference path. i.e. where in the model to find the
+                        content key value. This is an optional paremeter and the default keyRef value is :
+                        '/data/' + elementID .
+                    </li>
+                    <li><b>makeLayoutURI</b> : A function to generate the URI of the layout file from
+                        the content key. The menu will load the HTML in the layout using an AJAX call.
+                        This is an optional parameter and the default value is the menu element with the
+                        '.html' extension appended.
+                    </li>
+                    <li><b>makeSetupURI</b>: A function to generate the URI of a javaScript setup file from
+                        the content key. The code will be executed once the layout HTML has been loaded. This
+                        is also optional parameter and the default value is the layout URL with '.setup.js'
+                        appended. If the setup javaScript file doesn't exist then just the HTML layout is
+                        loaded.
+                    </li>
+                </ul>
+                </p>
+            </li>
+            <p>
+            <li>
+                <b>frameLookup</b> : Function to return an object with the correspondent frame element. This
+                is an optional paremeter and by defaul the function returs the elementID  with '-frame'
+                appended. e.x. if the elementID  is 'main' the frame elemement id must be  set to 'main-frame'.
+            </li>
+            </p>
+        </ul>
+        <!-->More examples about how to configure frames can be seen in the <b>DynamicFrame</b> section.<-->
+    </p>
+    <p>
+        The simplest menu can be initialized with this code:
+        <pre class="brush: js">
+            $('#dynamic-menu').nubDynamicMenu();
+        </pre>
+    </p>
+    <p>
+        We also have to describe a html menu element and a html elemet when the menu content will be loaded.
+    </p>
+    <p>
+        An UL element with an ID attribute and a set of LI menu elements is suitable to describe a menu.
+        <ul>
+            <li>
+                We give an ID attribute to the UL element. This ID will be used by the
+                <code>frameLookup</code> function to look for a frame element.
+            </li>
+            <li>
+                We give an ID attribute to any one of the list elements to identify the menu sections. 
+                This id will be used to generate any one of the layout URIs - the id plus '.html' appended -
+                and also to generate the setup file URI - layoutURI with '.setup.js' appended -.
+            </li>
+        </ul>
+    </p>
+    <p>
+        A DIV element is suitable for the frame element. By default the ID of the frame element has to match
+        the UL element ID with the '-frame' attached at the end. 
+    </p>
+    <p>
+        <pre class="brush: xml">
+            <![CDATA[
+                 <ul id="dynamic-menu" >
+                    <li id="main">Main</li>
+                    <li id="settings">Settings</li>
+                    <li id="logout">Logout</li>
+                </ul>
+                <div id="dynamic-menu-frame" />
+            ]]>
+        </pre>
+    </p>
+    <p>
+        Any one of the element in the UL represent a menu section browsable with a user click. For example if
+        a click on 'main' happens the contents of 'main.html' will be showed on the frame afer the code in
+        'main.setup.js' is executed.
+    </p>
+    <p>
+        We can use any one of the sections to load html code, run javaScript code or both.
+        In this example our menu has three sections. The sections main and settings provide a layout file and
+        a setup javascript file to be executed once the html has loaded. The layout section don't load any
+        data and just executes javaScript code to logout from the application.
+    </p>
+    <p>
+        The layout file for the main section is: <code>main.html</code>
+         <pre class="brush: xml">
+            <![CDATA[
+                <div>Main section</div>
+            ]]>
+        </pre>
+        And the setup file for the main section is: <code>main.setup.js</code>
+        <pre class="brush: js">
+            // Perform some operation on the main section.
+            console.log("main.setup.js executed");
+        </pre>
+
+    </p>
+    <p>
+        The settings section just load the layout and not provide any setup code.
+        The layout for the settings section is : <code>settings.html</code>
+        <pre class="brush: xml">
+            <![CDATA[
+                <div>Settings section</div>
+            ]]>
+        </pre>
+    </p>
+    <p>
+        The logout section only needs to run javaScript code to logout from the application so just a setup
+        file is provided. The setup javaScript code is stored in: <code>logout.html.setup.js</code>.
+        Observe that setup files are also executed even when not layout code is provided.
+        <pre class="brush: js">
+            // Logout from the application
+            console.log("logout...");
+        </pre>
+    </p>
+    
+    <!-- Example 1 : Simple configuration menu -->
+    <p>
+        Click on one of the section to load the related menu content into the frame.
+    </p>
+    <p>
+        <ul id="simple-dynamic-menu" >
+            <li id="main">Main</li>
+            <li id="settings">Settings</li>
+            <li id="logout">Logout</li>
+        </ul>
+        <div id="simple-dynamic-menu-frame" >Frame element:</div>
+    </p>
+
+    <h3>Example of configurations:</h3>
+
+    <h4>Setting up the frame lookup:</h4>
+    <p>
+        The content loaded for anyone of the sections is loaded in a frame. A DIV element can be used
+        for the frame. The <i>frameLookup</i> function can be used to confugure the frame element
+        lookup.
+    </p>
+    <p>
+        Next code show how to setup the frameLookup:
+        <pre class="brush: javascript">
+        $('#dynamic-menu').nubDynamicMenu({
+            'frameLookup' : function(menuItem){
+                console.log("frameLookup : " +  menuItem.attr('id') + '-frame');
+                return $('#' + menuItem.attr('id') + '-frame');
+            }
+        });
+       </pre>
+    </p>
+
+    <h4>Packages configuration:</h4>
+    <p>
+        For the example show above all the files used by the menu have to be located root directory where the
+        webpage is placed. One common example of using the makeLayout/makeSetup function configuration can
+        be to configure the menu to store the files - layout and setup - in different pages.
+    <p>
+        In this example we want to setup the mane  to store the files in packages with the menu element name.
+        Inside every page we want to load the layout file stored in a file called 'main.html' and
+        the setup file stored in a file call 'setup.js'.
+    </p>
+        This is simple to do with nubDynamicMenu. We just have to provide a makeLayoutURI and makeSetup
+        method to return the URI for those files. The menu configuration will be:
+         The layout for the settings section is : <code>settings.html</code>
+        <pre class="brush: javascript">
+        $('#dynamic-menu').nubDynamicMenu({
+            'frame' : {
+                'contentKeyRef' : '/data/contentKeyRef',
+                'makeLayoutURI' : function( key ){
+                    var path =  key + '/main.html';
+                 return path;
+            }
+        }
+        });
+        </pre>
+    </p>
+    <p>
+        Then our file system will look something similar to this:
+         <pre class="brush: javascript">
+            /root/
+                index.html
+                /main/
+                    main.html
+                    setup.js
+                /setting/
+                    settings.html
+                    setup.js
+                /logout/
+                    main.html
+                    setup.js
+         </pre>
+    </p>
+    <!--
+        TODO :
+        - Dynamic load in a section.
+        - Sections in packages.
+    -->
+
+    <p>
+        Menu dynamic using packages.
+        <!-- Example 2 -->
+        <ul id="pkgs-dynamic-menu" >
+            <li id="main">Main</li>
+
+            <li id="settings">Settings</li>
+            <li id="logout">Logout</li>
+        </ul>
+        <div id="pkgs-dynamic-menu-frame" />
+    </p>
+    
+
+</body>
+
+</html>
