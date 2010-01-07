@@ -190,6 +190,7 @@
         <page id="remote-data" title="Remote data" href="examples/remote-data.xml"/>
         <page id="simple-frames" title="Basic nub.frames" href="examples/simple-frames.xml"/>
         <page id="dynamic-frames" title="Dynamic nub.frames" href="examples/dynamic-frames.xml"/>
+        <page id="dynamic-menu" title="Dynamic nub.menu" href="examples/dynamic-menu.xml"/>
     </section>
     <section id="documentation" title="API Documentation">
         <page id="nub-function" title="The nub() function" href="manual/nub-function.xml"/>
