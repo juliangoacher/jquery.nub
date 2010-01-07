@@ -155,7 +155,7 @@
      * A frame which switches between pre-loaded child elements according to the value of its
      * content key.
      */
-    $.nub.model.options.contentIDAttr = 'data-content-id';
+    $.nub.model.options.contentIDAttr = 'id';
     SwitchedHTMLFrame.prototype = new Frame( {
         init: function( elem ) {
             var cid = this.cid;
@@ -175,7 +175,10 @@
         }
     } );
     function SwitchedHTMLFrame( options ) {
-        this.cid = options.cid||$.nub.model.options.contentIDAttr;
+        this.cid = $.nub.model.options.contentIDAttr;
+        if( options !== undefined && options.cid !== undefined ) {
+            this.cid = options.cid;
+        }
     };
     $.nub.frames.SwitchedHTMLFrame = SwitchedHTMLFrame;
 
@@ -214,5 +217,80 @@
                 frame.update( elem, keyRef, options.context );
             }, options.context );
         });
+    };
+
+    // TODO: Make changes to Frames.
+    // * Frames : Something that load html
+    //  - Display HTML in the model.  (name: HTMLFrame)
+    //  - Load html + setup from uri : (name: DynamicFrame)
+    //  - Load html from uri. (Same than DynamicFrame...just omit the setup.js file)
+    // * nubStack : Select part of html to be showed. Replacement for SwitchedHTMLFrame
+
+    // Suggestions: To make the use of Dynamic menu more intuitive...
+    // - If the file in MakeSetupURI doesn't exist don't throw any error.
+    // - Run setup even in scenarios where there is not a layout file. (ex. logout)
+
+    /**
+     * Apply a menu behaviour to a list element to allow menu navigation in a web page. A Perform dynamic load
+     * of frame content based on menu selection.
+     * Apply a menu to a list element in order to show html content in a frame.
+     * Allows menu navigation by clicking on an list element in he list showing the content in a frame.
+     *
+     * Options are:
+     * - frame:    The frame configuration (optional)
+     *      - keyRef : The content key reference (optional : default '/data/' + elementID  )
+     *      - makeLayoutURI : Function to generate a URI for the layout from the content key.
+     *          (optional : default to key + .html)
+     *      - makeSetupURI : Function to generate a UEI for the setup file (js) from the content key.
+     * - frameLookup : Funcion to return an object with the correspondent frame element.  (optional)
+     *     (default to elementID+'-frame' e.g. elementID is 'main' the frame elemement id has to be 'main-frame')
+     */
+    $.fn.nubDynamicMenu = function( options ) {
+        var elementID = this.attr('id');
+        var contentKeyRef = '/data/' + elementID;
+        var frameLookup = function(menuItem){
+          return $('#' + menuItem.attr('id') + '-frame');
+        }
+        // Default values
+        var makeLayoutURI = function(key){
+//                console.log('setting the path to ... ' +key+'.html' );
+                return key + '.html'
+        };
+        var makeSetupURI = function(key){
+//                console.log('setting the setup path to ... ' + this.makeLayoutURI(key) + '.setup.js');
+                return this.makeLayoutURI(key) + '.setup.js';
+        };
+
+        if (options && options.frame) {
+            frameOptions  = options.frame;
+        };
+        if (options && $.isFunction( options.frameLookup)) {
+            frameLookup = options.frameLookup;
+        };
+        if (options && $.isFunction( options.frame.makeLayoutURI)) {
+            makeLayoutURI = options.frame.makeLayoutURI;
+        }
+        if (options && $.isFunction( options.frame.makeSetupURI)){
+            makeSetupURI = options.frame.makeSetupURI;
+        }
+        if (options && options.frame.contentKeyRef) contentKeyRef = options.frame.contentKeyRef;
+
+        var frameOptions = {
+            'frame' : new $.nub.frames.DynamicFrame({
+                'makeLayoutURI' :  makeLayoutURI,
+                'makeSetupURI'  : makeSetupURI
+             }),
+            'keyRef' : contentKeyRef
+        };
+
+        $(this).find('li').each(function(){
+            var id = this.id;
+            $(this).click(function(){
+                console.log('click on ' + id);
+                $.nub.set(contentKeyRef, id);
+            });
+        });
+
+        return frameLookup($(this)).nubFrame(frameOptions);
     };
 })(jQuery);
