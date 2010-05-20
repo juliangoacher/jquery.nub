@@ -72,5 +72,8 @@
             The select list's values will change from [ <i>Red, Green, Blue, White</i> ] to
             [ <i>Orange, Mauve, Brown, Black</i> ].
         </p>
+        <!-- TODO 
+            Mention that the list key is stored in : /data/color 
+        -->
     </body>
 </html>

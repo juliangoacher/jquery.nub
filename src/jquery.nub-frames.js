@@ -114,18 +114,24 @@
                         // Timeout is to ensure that the DOM is rendered before applying the setup.
                         window.setTimeout(function() {
                             // Check for any errors parsing the setup file.
+                            console.log("Setup is : %o", setup);
                             if( setup.meta['ajax-status'] == 'parsererror' ) {
                                 throw new Error("Error parsing setup file: "+setupURI );
                             }
-                            // The setup code is requested as text (this is more reliable across
-                            // browsers). Evaluate the setup code then check that we have a function.
-                            eval('var setupFn='+setup.data);
-                            setup.data = setupFn;
-                            if( $.isFunction( setup.data ) ) {
-                                // Apply the setup function to the content item.
-                                setup.data.apply( item );
+                            if (setup.meta['ajax-status'] !== 'success'){
+                                console.warn('Setup file not found : ' + setupURI);
+                                //throw new Error('Setup file not found:'+setupURI);
+                            }else{
+                                // The setup code is requested as text (this is more reliable across
+                                // browsers). Evaluate the setup code then check that we have a function.
+                                eval('var setupFn='+setup.data);
+                                setup.data = setupFn;
+                                if( $.isFunction( setup.data )) {
+                                    // Apply the setup function to the content item.
+                                    setup.data.apply( item );
+                                }
+                                else throw new Error("Setup data must be a function: "+setupURI );
                             }
-                            else throw new Error("Setup data must be a function: "+setupURI );
                         }, 0 ); // setTimeout
                     });
                 };
@@ -269,7 +275,7 @@
         if (options && $.isFunction( options.frame.makeSetupURI)){
             makeSetupURI = options.frame.makeSetupURI;
         }
-        if (options && options.frame.contentKeyRef) contentKeyRef = options.frame.contentKeyRef;
+        if (options && options.frame.contentKeyRef) contentKeyRef = options.frame.keyRef;
 
         var frameOptions = {
             'frame' : new $.nub.frames.DynamicFrame({

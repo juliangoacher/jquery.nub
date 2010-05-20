@@ -192,6 +192,9 @@
         <page id="dynamic-frames" title="Dynamic nub.frames" href="examples/dynamic-frames.xml"/>
         <page id="dynamic-menu" title="Dynamic nub.menu" href="examples/dynamic-menu.xml"/>
     </section>
+    <section id="demo-app" title="Tutorials">
+        <page id="blog-app-demo" title="Blog demo" href="examples/blog-demo.xml" />
+    </section>
     <section id="documentation" title="API Documentation">
         <page id="nub-function" title="The nub() function" href="manual/nub-function.xml"/>
         <page id="methods" title="Methods" href="manual/methods.xml"/>

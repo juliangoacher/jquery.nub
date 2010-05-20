@@ -1,3 +1,3 @@
 function(){
-    console.log("Running js code in main.html.setup.js");
+    alert("Running js code in main.html.setup.js");
 }

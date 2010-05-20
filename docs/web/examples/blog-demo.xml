@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!--
+    Document   : demo-app.xml
+    Created on : January 9, 2010, 12:31 PM
+    Author     : Javier Loriente
+    Description:
+        How to create an UI application from scratch using jquery.nub
+-->
+<html>
+    <head>
+          <script src="jquery.nub"/>
+          <script src="jquery.nub-frames.js"/>
+          <script>
+              console.log("Starting app);
+          </script>
+    </head>
+    <body>
+        <h2>Introduction</h2>
+            <p>This tutorial covers the creation of a simple blog front-end from scratch using html, jquery and 
+                the jquery.nub plugin, along with the extensions jquery.nub-frames and jquery.nub-menu.
+                The intention of this document is to show how to use jquery.nub to develop real application and to show 
+                some examples of jquery.nub usage./p>
+            </p>
+            <p>The application we are going to develop is a simple personal blog composed by 
+                four sections and a menu to navigate between sections. The <b>main</b> section is where the user 
+                post are show and there is also three additional sections: <b>'about'</b>, <b>'links'</b> and <b>'admin'</b>.
+                New post can be added to the blog from the <b>'admin'</b> section.
+            </p>
+            <p>In order keep this example simple in and show all the main jquery MVC functionalities this blog fully runs in
+                the browser, so no ajax call are performed to the server. Just plain html and javaScript has been used and all
+                the post information is stored in the DOM using jquery.nub.
+            </p>
+        <h2>Download</h2>
+            <p>Download the demo-blog source code from : <a href="example/blog-demo-source-code.tar">blog-demo-source-code.tar</a>
+            </p>
+        <h2>Sections explained</h2>
+            <p>The app is composed by 4 section:
+                <ul>
+                    <li><b>Main</b> : The main section is where user lastest post are showed.</li>
+                    <li><b>About</b> : This section can contain info about the user or company. It just loads 
+		    a section of html code and shows it in the main frame.</li>
+                    <li><b>Links</b> : Section with related links. Also loaded from html.</li>
+                    <li><b>Admin</b> : The admin section allows the user to make a new post. This section also covers an
+                        example of dynamicFrame to provide navigation between sub-sections. 
+                    </li> 
+                </ul>
+            </p>
+      
+            <h2>Create an "index.html"</h2>
+            <p>
+                To start with our blog the first step is to create the main html file "index.html". This file
+                contains two elements, a list element for the blog main menu and a div element where the menu's
+                frame element will be attached.
+            </p>
+            <p>
+                The main menu defined here will provide user navigation between sections using a nubDynamicMenu.
+                <p>Here is the code for <code>index.html</code></p>
+                <pre class='brush : xml'>
+                    <div id="main-menu" >
+                        <ul id="blog-main-menu" class="menu">
+                            <li id="main">Main</li>
+                            <li id="about">About</li>
+                            <li id="links">Links</li>
+                            <li id="admin">Admin</li>
+                            <li id="logout">Logout</li>
+                        </ul>
+                        <!-- Define frame to show the menu content -->
+                        <div id="blog-main-menu-frame" />
+                    </div>
+                </pre>
+            </p>    
+        <h2>Define the main menu</h2>
+            <p>
+                The main blog's main menu allows user navigation between different sections. We use 
+                a nubDynamicMenu to do that. nubDynamicMenu allows menu creation to provide user navigation 
+                in a webpage. When the user click on the menu a blog's section in loaded in the "blog-main-menu-frame"
+                This way the developer don't have to worry about catching navigation events, the only thing he 
+                has to do is to register the "main-menu" list element created in previous step with a nubDynamicMenu.
+            </p>
+            <p>
+                The list element "main-menu contains four different sections: main, about, links, admin. In order to 
+                keep the application code organized we want to keep the source code separated in different 
+                folders/packages and all those in a root folder called 'sections".
+            </p>
+            <p>
+                Inside the "sections" folder we've set of folders - one per every section - and in any of those
+                folder keep two files : one containing the section html layout code and a setup.js file containing
+                javaScript code to setup the section.
+                Those files are named the same in every package: <code>main.html</code> and <code>setup.js</code>.
+                We will cover those files in more detail in next sections. This is how the blog source code is 
+                organized.
+                <pre class="brush: javascript">
+                    /blog-demo/
+                        index.html          // main html file
+                    /js/
+                        blog-main.js        // init code
+                        /sections/          // blog sections
+                            /main/
+                                main.html       // section layout
+                                setup.js        // section init code
+                            /about/
+                                main.html
+                            /links/
+                                main.html
+                            /admin/
+                                main.html
+                                setup.js
+                </pre>
+            </p>
+            <p>
+                To initialize the blog we have created a file "blog-main.js" containing the startup code that will be run
+                once "index.html" page has loaded. Is in this file where we can register the nubDynamicFrame with the elements
+                in "index.html". The code in <code>blog-main.js</code> is:
+                <pre class='brush :js' >
+                    // Define Main blog menu
+                    $('#blog-main-menu').nubdynamicmenu({
+                        'frame' : {
+                            'makeLayoutUri' : function(key){
+                                return 'sections/' + key + '/main.html';
+                            },
+                            'makeSetupUri' : function(key){
+                                return 'sections/' + key + '/setup.js';
+                            }
+                        }
+                    });
+                </pre>
+                Now you can create the html and setup files for every section.
+            </p>
+            <h2>Creating sections</h2>
+               <h3>Main Section</h3>
+               <p>Main section show the user post and will be cover in mode detail in the "Loading post in main section" 
+                   in this document.
+               </p>
+               <h3>Bio and link Sections</h3>
+               <p>This sections just make uses of the nubDynamicFrame to render a piece of html in the frame so
+                   just a "main.html" file containing the html is required. If any of the sections you have 
+                   also require some javaScript code you can include a "setup.js" file that will be run on the 
+                   html template.</p>
+
+                <h3>Admin Section</h3>
+                     <p>The admin section allows to the user to make a new post and change user details.</p>
+                     <p>This section includes a select list to navigate between "admin" subsection. The list is
+                        used to drive a SwitchedHTMLFrame which loads html sub-sections depending on user selection.
+                     </p>
+                     <p>
+                         The is how the "setup.html" code contains the select list element and the switched menu element:
+                         <pre class='brush : xml'>
+                            <!--Select list element -->
+                            <select name="admin-section-cid">
+                                <option value="new-post">New post</option>
+                                <option value="user-details">Change User Details</option>
+                            </select>
+
+                            <!-- Switched menu -->
+                            <div id="admin-switched-menu" >
+                                <div id="new-post">
+                                    <!-- Form to make a new post : See 'Posting mechanism' section -->
+                                </div>
+                                <div id="add-post-form">
+                                    <!-- Form to manage user details -->
+                                </div>
+                            </div>
+                        </pre>
+                     </p>
+                     <p>
+                         In the setup code we need to do several things. Firstly we have to register the select list 
+                         and the SwitchedHTMLFrame to provide navigation between subsections. Then we have to implement
+                         the posting mechanism.
+                     </p>
+                     <p> 
+                         This is the code to register the select list and the SwitchedHTMLFrame:
+                         <pre class='brush : js'>
+                            // Register select list with nub
+                            $('select,:input').nub('/data'); // Section id is stored in /data/admin-section-cid
+
+                            // Define the switched menu. The keyRef points to path to section id.
+                            $('#admin-switched-menu').nubFrame({
+                                'frame' : new $.nub.frames.SwitchedHTMLFrame({'cid' : 'id'}),
+                                'keyRef' : '/data/admin-section-cid'
+                            })
+                         </pre>
+
+                    </p>
+                    <h3>Posting mechanism</h3>
+                         <p>The "post-blog" subsection in admin section allows a user to make a new post in the blog.</p>
+                         <p>We have to create a form with a set of input element so the user can fill the post's title and 
+                             content information and click the 'post' button to make a new post. The form may look something
+                             similar to the next code.
+                         <pre class='brush : js'>
+                              <form id="add-post-form">
+                                 Post title: <input name="/data/post/title"/>
+                                 Post content: <input  name="/data/post/content"/>
+                                 <input id="post-entry" type="button" value="Post!" />
+                              </form>
+                         </pre>
+                         </p>
+                         <p>
+                             Then we have to register the input elements with nub() function and add a callback function to 
+                             button click that will call a savePost() method.
+                            <pre class='brush : js'>
+                                $(':input').nub('/data'); // inputs data will be store in /data/post/{title|event}
+                                $('#post-entry').click(function(event){
+                                    savePost();
+                                });
+                            </pre>
+                            The last step is to implement the savePost() method that will save post in the DOM. We read the post
+                            content values using the nub.get() method, add the post to the array and store the array in the model
+                            using the nub.set() method.
+                            <pre class='brush : js'>
+                                // Save a post in the DOM.
+                                function savePost(){
+                                    var post = {
+                                        dateTime : getCurrentDate(),
+                                        title    : $.nub.get('/data/post/title'),
+                                        content  : $.nub.get('/data/post/content')
+                                    }
+                                    
+                                    postArray.push(post);
+                                    $.nub.set(postPoolPath, postArray);
+                                }
+                            </pre>
+                         </p>
+                         <p>
+                             We have now a main section where the user can make post and they are stored in the browser DOM,
+                             next section covers how to show those post in the main blog section.
+                         </p>
+
+                        <h3>Loading posts in main section</h3>
+                             <p>
+                                 The main section is intended to show the post. When user clicks on the main section the 
+                                 list of post get refreshed with all the post previously store in the post pool using
+                                 jquery.nub function.
+                             </p>
+                             <p>To detect when the user clicks on the "main" section we can attach a view to the path to
+                                 the menu keyRef and then inspect the value to see what section was selected.
+                                 The next code is sufficient for that:
+                                 <pre class='brush :js'>
+                                 // Register the view.
+                                   $.nub.view('/data/blog-main-menu',refreshSection);
+
+                                   var refreshSection = function(){
+                                        var sectionKey = $.nub.get('/data/blog-main-menu');
+                                        switch(sectionKey){
+                                            case 'main': {
+                                                addPostsLoadingTemplate();
+                                                break;
+                                            }
+                                        }
+                                    }
+                                </pre>
+                             </p>
+
+                             <p>Now we have to implement the addPost method. There are different ways to do that,
+                                 probably the simplest one is to create an html element per post and append those to a 
+                                 html post element located in the main section.
+                            </p>
+                            <p>
+                                This is how the main section "main.html" file looks like, now we have to attach the post to 
+                                the "post" element.
+                                <pre class='brush :js'>
+                                    <div>
+                                        <div id="post" />
+                                    </div>
+                                </pre>
+                                Then with jquery.nub it is easy to read get a list of post to iterate and append every single 
+                                post to the "post" element.
+                                <pre class='brush :js,xml'>
+        function addPostToMainSection(){
+            // Read the posts pool from DOM
+            var postPool = $.nub.get('/data/post-pool/');
+            // Append post to 'post' element in main section.
+            for(i in postPool){
+                var post = postPool[i];
+                var html = '<div class="post">
+                    <p>Title: '+ post.title +'</p>
+                    <p>Post : ' + post.content + '</p>
+                    <spam>' + post.dateTime.time + ' ' 
+                    + post.dateTime.date + 
+                    '</spam></div>';
+                $('#posts').append(html);
+            }
+
+        }
+                                </pre>
+                                This code is creating a div element from html code and appending it to the post element but 
+                                this solution is not ideal. One problem here is that posts are showed chronologically sorted starting
+                                with the latest post posted and ending with the first post. In a blog posts are suppose be sorted
+                                chronologically in the other way around, showing first the latest item posted. Also this solution don't
+                                keep separation of html and javascript code, having to type html in javascript file. This problem cold 
+                                solved using templating. A simple templating mechanism solution is coverd in the next section.
+                            </p>
+
+                        <h3>Loading post using templating</h3>
+                        <p>A better solution would be the use of templating. We can use templating in combination with 
+                            jquery.nub views to attach the post element to the "post" element and dynamically show 
+                            post content in the main section.
+                        </p>
+                        <p>We are gonna create a layout folder where the post layout template will be placed. It can look 
+                            something like:
+                            <pre class='brush :xml'>
+                                <div>
+                                    <span data="title" />
+                                    <span data="content" />
+                                    <span data="dateTime/date" />
+                                    <span data="dateTime/time" />
+                                </div>
+                            </pre>
+                        </p>
+                        <p>Then in the addPost method we have to load the template and register the views with jquery.nub. 
+                            This is how the addPost method looks like:
+                            <pre class='brush :js' >
+                               for(var i= $.nub.get('/data/post-pool/length'); i--; 0){
+                                // Create a post element
+                                var postElement =
+                                    $(document.createElement('div'))
+                                        .attr({
+                                            id : i 
+                                    })
+                                // Load the layout in the post element and register views for post pool.
+                                $(postElement).load('layouts/post-layout.html', function(){
+                                    var id = $(this).attr('id');    // get the post id from the element attribute.
+                                    $(this).find('[data]').nub('/data/post-pool/' + id);   // register views. 
+                                });
+                                $('#posts').append(postElement);
+                                }
+                            </pre>
+                        </p>
+                        <p> Observe that the code above get the post-pool length from the path'/data/post-pool/length'. This is a 
+                            useful feature in jquery.nub, when we store a list of objects in a location we can use it to know the
+                            length. Knowing the length of the post pool we can decreasingly loop all the element in stored in
+                            the post pool. For every post we create a div element with and id attribute storing the post number 
+                            and load the post layout template. Is in the load callback method where we register all
+                            'data' attribute with the nub functions, using a context path '/data/post-pool/{id}' where {id} the 
+                            postId stored previously in div id attribute.
+                        </p>
+                        <p>
+                            Keep in main that the path '/data/post-pool/' contains a list of post object that can be accesible with index. This
+                            means that an specific post will be stored in '/data/post-pool/{post-id}' and the list length can be accessed in
+                            '/data/post-pool/length'.
+                        </p>
+                        <p>
+                            This example covers the use of the nub function context path and also how to access items in arrays using nub.
+                            The nub() function used with a context path allows many views elements reference different properties
+                            in the same objects. Read the nub() function documentation for more information.
+                        </p>
+
+                        <h3>Conclusion</h3>
+                        <p>In this tutorial we have covered the creation of simple blog front end using jquery.nub. Using jquery.jnub
+                            in combination with the jquery.nub-frame extension allows to quickly develop html/javaScript front-end
+                            applications.
+                        </p>
+                        <p>
+                            Now you can start developing your own website using jquery.nub.
+                        </p>
+                   
+    </body>
+</html>

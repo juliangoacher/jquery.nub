@@ -1,0 +1,66 @@
+<div id="main-section" class="section-container">
+
+      <!-- Select list marckup -->
+      <!--
+         Key stored in the path specify in name attribute.
+         Values are stored in '/data/admin-section'
+      -->
+      <select name="admin-section-cid" data="color-list">
+          <option value="new-post">New post</option>
+          <option value="delete-post">Delete post</option>
+          <option value="user-details">Change User Details</option>
+      </select>
+
+      <!-- Show selected section -->
+      <p>Section selected : <b data="/data/admin-section-cid" /></p>
+      
+      <!-- Switched menu -->
+      <div id="admin-switched-menu">
+          <!-- New post section -->
+          <div id="new-post">
+              <form id="add-post-form">
+                 Post title: <input name="post/title"/>
+                 Post content: <input  name="post/content"/>
+                 <input id="post-entry" type="button" value="Post!" />
+              </form>
+              <!-- DIV to dynamically show the latest post info -->
+              <div id="last-post">
+                  New Post ok. <br/><br/> Posted at : <b data="dateTime/time"/> - <b data="dateTime/date"/>
+                  <p>
+                      Title: <span data="title" />
+                      Content: <span data="content" />
+                  </p>
+              </div>
+          </div>
+          <div id="delete-post">
+                 <input id="delete-all-posts" type="button" value="Delete all posts" />
+          </div>
+          <!-- User details section -->
+          <div id="user-details">
+              <b>User details.</b>
+              <p>
+                  <label>
+                    Total Number of post:
+                  </label>
+                  <span data="/data/post/postNumber" />
+              </p>
+              <p>
+                  <label>Username:</label>
+                  <span data="/data/user/username" />
+              </p>
+              <form id="change-pass-form">
+                  <label>
+                    Change password:
+                  </label>
+                  <label>
+                      Current Password:
+                  </label>
+                  <input name="/data/current-pass" />
+                  <label>
+                      New Password:
+                  </label>
+                  <input name="/data/new-pass" />
+              </form>
+          </div>
+      </div>
+  </div>

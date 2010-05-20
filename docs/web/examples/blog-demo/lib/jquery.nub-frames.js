@@ -114,18 +114,24 @@
                         // Timeout is to ensure that the DOM is rendered before applying the setup.
                         window.setTimeout(function() {
                             // Check for any errors parsing the setup file.
+                            //console.log("Setup is : %o", setup);
                             if( setup.meta['ajax-status'] == 'parsererror' ) {
                                 throw new Error("Error parsing setup file: "+setupURI );
                             }
-                            // The setup code is requested as text (this is more reliable across
-                            // browsers). Evaluate the setup code then check that we have a function.
-                            eval('var setupFn='+setup.data);
-                            setup.data = setupFn;
-                            if( $.isFunction( setup.data ) ) {
-                                // Apply the setup function to the content item.
-                                setup.data.apply( item );
+                            if (setup.meta['ajax-status'] !== 'success'){
+                                console.warn('Setup file not found : ' + setupURI);
+                                //throw new Error('Setup file not found:'+setupURI);
+                            }else{
+                                // The setup code is requested as text (this is more reliable across
+                                // browsers). Evaluate the setup code then check that we have a function.
+                                eval('var setupFn='+setup.data);
+                                setup.data = setupFn;
+                                if( $.isFunction( setup.data )) {
+                                    // Apply the setup function to the content item.
+                                    setup.data.apply( item );
+                                }
+                                else throw new Error("Setup data must be a function: "+setupURI );
                             }
-                            else throw new Error("Setup data must be a function: "+setupURI );
                         }, 0 ); // setTimeout
                     });
                 };
@@ -231,10 +237,8 @@
     // - Run setup even in scenarios where there is not a layout file. (ex. logout)
 
     /**
-     * Apply a menu behaviour to a list element to allow menu navigation in a web page. A Perform dynamic load
-     * of frame content based on menu selection.
-     * Apply a menu to a list element in order to show html content in a frame.
-     * Allows menu navigation by clicking on an list element in he list showing the content in a frame.
+     * Apply a menu behaviour to a list element to allow menu navigation in a web page. Performs dynamic load
+     * of content in a frame based on user's menu selection.
      *
      * Options are:
      * - frame:    The frame configuration (optional)
@@ -253,14 +257,14 @@
         }
         // Default values
         var makeLayoutURI = function(key){
-//                console.log('setting the path to ... ' +key+'.html' );
                 return key + '.html'
         };
         var makeSetupURI = function(key){
-//                console.log('setting the setup path to ... ' + this.makeLayoutURI(key) + '.setup.js');
                 return this.makeLayoutURI(key) + '.setup.js';
         };
 
+        var frameOptions;
+        
         if (options && options.frame) {
             frameOptions  = options.frame;
         };
@@ -275,7 +279,7 @@
         }
         if (options && options.frame.contentKeyRef) contentKeyRef = options.frame.contentKeyRef;
 
-        var frameOptions = {
+        frameOptions = {
             'frame' : new $.nub.frames.DynamicFrame({
                 'makeLayoutURI' :  makeLayoutURI,
                 'makeSetupURI'  : makeSetupURI
@@ -291,6 +295,7 @@
             });
         });
 
+        // Check if there is a frame element, show error.
         return frameLookup($(this)).nubFrame(frameOptions);
     };
 })(jQuery);
