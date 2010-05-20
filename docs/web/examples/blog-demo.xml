@@ -325,9 +325,9 @@
                                 }
                             </pre>
                         </p>
-                        <p> Observe that the code above get the post-pool length from the path'/data/post-pool/length'. This is a 
-                            useful feature in jquery.nub, when we store a list of objects in a location we can use it to know the
-                            length. Knowing the length of the post pool we can decreasingly loop all the element in stored in
+                        <p> Observe that in the code above we get the post-pool length from the path '/data/post-pool/length'. This is a 
+                            useful feature in jquery.nub. When we store a list of objects in a location we can use that to know the
+                            length. Once we know the length of the post pool we can decreasingly loop all the element stored in
                             the post pool. For every post we create a div element with and id attribute storing the post number 
                             and load the post layout template. Is in the load callback method where we register all
                             'data' attribute with the nub functions, using a context path '/data/post-pool/{id}' where {id} the 
